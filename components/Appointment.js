@@ -6,12 +6,13 @@ type Props = {
   flagColor: string,
   title: string,
   description: string,
-  time: string
+  time: string,
+  onPress: () => void
 };
 
 export default class Appointment extends Component<Props> {
   render() {
-    const { date, flagColor, title, description, time } = this.props;
+    const { date, flagColor, title, description, time, onPress } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.dateContainer}>
@@ -19,7 +20,7 @@ export default class Appointment extends Component<Props> {
           <Text style={[styles.date, date == "JETZT" ? { color: "#316597" } : {}]}>{date}</Text>
           <View style={styles.bottomLine} />
         </View>
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity onPress={onPress} style={styles.card}>
           <View style={[styles.flag, { backgroundColor: flagColor }]} />
           <View style={styles.contentContainer}>
             <View style={styles.titleContainer}>

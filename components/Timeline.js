@@ -7,32 +7,26 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, ScrollView } from "react-native";
 
-import Appointment from "./components/Appointment";
+import Appointment from "../components/Appointment";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
   android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
 });
 
-type Props = {
-  navigator: any
-};
-
-export default class App extends Component<Props> {
+type Props = { navigator: any };
+export default class Timeline extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true
   };
 
-  _open = () => {
-    console.log("hello");
-    // this.props.navigator.showModal({
-    //   // title: Strings.camera.title,
-    //   screen: "example.AppointmentDetail"
-    // });
-  };
+  _onTouchCard = () => {
+    console.log("on");
 
-  hello = () => {
-    console.log("xx");
+    this.props.navigator.showModal({
+      // title: Strings.camera.title,
+      screen: "example.AppointmentDetail"
+    });
   };
 
   render() {
@@ -44,9 +38,9 @@ export default class App extends Component<Props> {
           flagColor="#55EBD9"
           time="10:00"
           description="Dr. Daniel Janke | 286"
-          open={this.hello}
+          onPress={this._onTouchCard}
         />
-        {/* <Appointment
+        <Appointment
           title="Voruntersuchung"
           date="BALD"
           flagColor="#B2EB55"
@@ -115,7 +109,7 @@ export default class App extends Component<Props> {
           flagColor="#018C8E"
           time="12:00"
           description="Dr. Daniel Janke | 286"
-        /> */}
+        />
       </ScrollView>
     );
   }
