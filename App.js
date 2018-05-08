@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, ScrollView } from "react-native";
 
-import Appointment from "./components/Appointment";
+import Appointment from "./components/AppointmentCard";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",

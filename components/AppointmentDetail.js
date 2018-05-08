@@ -8,8 +8,17 @@ type Props = {};
 export default class AppointmentDetail extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true,
-    statusBarHidden: true
+    tabBarHidden: true
   };
+
+  _onPressDoctorCard = () => {
+    console.log("doccard");
+
+    this.props.navigator.push({
+      screen: "example.DoctorDetailView"
+    });
+  };
+
   render() {
     const { date, flagColor, title, description, time, onPress } = this.props;
     return (
@@ -24,7 +33,7 @@ export default class AppointmentDetail extends Component<Props> {
           </Text>
           <Text style={styles.title}>Ihr Arzt</Text>
         </View>
-        <DoctorCard />
+        <DoctorCard onPress={this._onPressDoctorCard} />
         <View style={styles.content}>
           <Text style={styles.title}>Bitte mitbringen</Text>
           <Text style={styles.title}>Standort</Text>

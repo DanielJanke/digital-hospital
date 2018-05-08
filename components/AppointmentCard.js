@@ -10,7 +10,7 @@ type Props = {
   onPress: () => void
 };
 
-export default class Appointment extends Component<Props> {
+export default class AppointmentCard extends Component<Props> {
   render() {
     const { date, flagColor, title, description, time, onPress } = this.props;
     return (
