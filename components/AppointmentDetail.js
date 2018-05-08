@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 
 import DoctorCard from "../components/DoctorCard";
+import TodoCard from "../components/TodoCard";
 
 type Props = {};
 
@@ -22,7 +23,7 @@ export default class AppointmentDetail extends Component<Props> {
   render() {
     const { date, flagColor, title, description, time, onPress } = this.props;
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View style={styles.header} />
         <View style={styles.content}>
           <Text style={styles.title}>Beschreibung</Text>
@@ -36,6 +37,11 @@ export default class AppointmentDetail extends Component<Props> {
         <DoctorCard onPress={this._onPressDoctorCard} />
         <View style={styles.content}>
           <Text style={styles.title}>Bitte mitbringen</Text>
+        </View>
+        <TodoCard />
+        <TodoCard />
+        <TodoCard />
+        <View style={styles.content}>
           <Text style={styles.title}>Standort</Text>
         </View>
       </ScrollView>
@@ -44,6 +50,9 @@ export default class AppointmentDetail extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#F0F3F6"
+  },
   header: {
     height: 164,
     backgroundColor: "#aaa",
