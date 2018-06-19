@@ -12,7 +12,7 @@ registerScreens(); // this is where you register all of your app's screens
 Navigation.startTabBasedApp({
   tabs: [
     {
-      label: "Meins",
+      label: "Übersicht",
       screen: "example.MyArea", // this is a registered name for a screen
       //   icon: require("../img/one.png"),
       //   selectedIcon: require("../img/one_selected.png"), // iOS only
@@ -20,14 +20,14 @@ Navigation.startTabBasedApp({
       systemItem: "compose"
     },
     {
-      label: "Übersicht",
+      label: "Karte",
       screen: "example.MyArea",
       //   icon: require("../img/two.png"),
       //   selectedIcon: require("../img/two_selected.png"), // iOS only
       title: "Screen Two"
     },
     {
-      label: "Weiteres",
+      label: "Informationen",
       screen: "example.MyArea",
       //   icon: require("../img/two.png"),
       //   selectedIcon: require("../img/two_selected.png"), // iOS only
