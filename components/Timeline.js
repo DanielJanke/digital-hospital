@@ -43,6 +43,7 @@ export default class Timeline extends Component<Props> {
     super(props);
     this.state = {
       indicatorPosition: new Animated.Value(0),
+      scrollX: new Animated.Value(0),
       indicatorWidth: new Animated.Value(100),
       indicatorColor: [
         new Animated.Value('rgb(97,97,97)'),
@@ -59,36 +60,6 @@ export default class Timeline extends Component<Props> {
       // screen: 'example.AppointmentDetail'
       screen: 'example.ChecklistDetailView'
     });
-  };
-
-  _onScrollSegmentView = event => {
-    this.xOffset = event.nativeEvent.contentOffset.x;
-
-    if (this.xOffset === Dimensions.get('window').width) {
-      Animated.parallel([
-        Animated.timing(this.state.indicatorPosition, {
-          toValue: 102,
-          duration: 100
-        }),
-        Animated.timing(this.state.indicatorWidth, {
-          toValue: 132,
-          duration: 100
-        })
-      ]).start();
-      this.refs._verticalScrollView.scrollTo({ x: 0, y: 0, animated: true });
-    }
-    if (this.xOffset === 0) {
-      Animated.parallel([
-        Animated.timing(this.state.indicatorPosition, {
-          toValue: 0,
-          duration: 100
-        }),
-        Animated.timing(this.state.indicatorWidth, {
-          toValue: 100,
-          duration: 100
-        })
-      ]).start();
-    }
   };
 
   _onPressSegment = pageIndex => {
@@ -119,13 +90,6 @@ export default class Timeline extends Component<Props> {
         >
           <Text style={styles.headline}>Max Mustermann</Text>
           <Text style={styles.subheadline}>Zimmer 2.023</Text>
-          {/* <View style={styles.segmentContainer}>
-            <Animated.Text style={[styles.segmentText]}>Timeline</Animated.Text>
-
-            <Animated.Text style={[styles.segmentText]}>
-              Einzelansicht
-            </Animated.Text>
-          </View> */}
 
           <View style={styles.segmentContainerOverlay}>
             <TouchableOpacity
@@ -137,9 +101,33 @@ export default class Timeline extends Component<Props> {
                 style={[
                   styles.segmentText,
                   {
-                    color: this.state.indicatorPosition.interpolate({
-                      inputRange: [0, 1],
+                    color: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
                       outputRange: [
+                        'rgba(97, 97, 97, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)'
+                      ]
+                    })
+                  }
+                ]}
+              >
+                Assistent
+              </Animated.Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this._onPressSegment(1);
+              }}
+            >
+              <Animated.Text
+                style={[
+                  styles.segmentText,
+                  {
+                    color: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
+                      outputRange: [
+                        'rgba(255, 255, 255, 1)',
                         'rgba(97, 97, 97, 1)',
                         'rgba(255, 255, 255, 1)'
                       ]
@@ -152,16 +140,17 @@ export default class Timeline extends Component<Props> {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                this._onPressSegment(1);
+                this._onPressSegment(2);
               }}
             >
               <Animated.Text
                 style={[
                   styles.segmentText,
                   {
-                    color: this.state.indicatorPosition.interpolate({
-                      inputRange: [0, 1],
+                    color: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
                       outputRange: [
+                        'rgba(255, 255, 255, 1)',
                         'rgba(255, 255, 255, 1)',
                         'rgba(97, 97, 97, 1)'
                       ]
@@ -175,8 +164,22 @@ export default class Timeline extends Component<Props> {
             <Animated.View
               style={[
                 styles.indicator,
-                { transform: [{ translateX: this.state.indicatorPosition }] },
-                { width: this.state.indicatorWidth }
+                {
+                  transform: [
+                    {
+                      translateX: this.state.scrollX.interpolate({
+                        inputRange: [0, 414, 828],
+                        outputRange: [4, 110, 210]
+                      })
+                    }
+                  ]
+                },
+                {
+                  width: this.state.scrollX.interpolate({
+                    inputRange: [0, 414, 828],
+                    outputRange: [100, 90, 130]
+                  })
+                }
               ]}
             />
           </View>
@@ -186,10 +189,31 @@ export default class Timeline extends Component<Props> {
           pagingEnabled={true}
           contentContainerStyle={styles.segmentViewContainer}
           horizontal={true}
-          onScroll={this._onScrollSegmentView}
-          scrollEventThrottle={0}
+          // onScroll={this._onScrollSegmentViewNew}
+          onScroll={Animated.event(
+            // scrollX = e.nativeEvent.contentOffset.x
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: this.state.scrollX
+                  }
+                }
+              }
+            ],
+            { useNativeDriver: false }
+          )}
+          scrollEventThrottle={16}
           ref={c => (this._segmentScrollView = c)}
         >
+          <View style={styles.segmentViewx}>
+            <Text style={styles.sectionHeadline}>Chatbot</Text>
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+          </View>
           <View style={styles.segmentViewx}>
             <Text style={styles.sectionHeadline}>Vorbereitung</Text>
             <Appointment
@@ -239,7 +263,7 @@ export default class Timeline extends Component<Props> {
               date="12.03"
               flagColor="#B2EB55"
               time="36 min"
-              description="Sie werden"
+              description="Sie werden aufgerufen"
             />
             <Appointment
               title="Voruntersuchung"
@@ -316,6 +340,7 @@ export default class Timeline extends Component<Props> {
               lastEntry={true}
             />
           </View>
+
           <View style={styles.segmentViewx}>
             <Text style={styles.sectionHeadline}>Vorbereitung</Text>
             <TodoCard title="Später Menü" description="Platzhalter" />
@@ -323,35 +348,6 @@ export default class Timeline extends Component<Props> {
             <TodoCard title="Später Menü" description="Platzhalter" />
             <TodoCard title="Später Menü" description="Platzhalter" />
             <TodoCard title="Später Menü" description="Platzhalter" />
-            {/* <Appointment
-              firstEntry={true}
-              title="Termin vereinbaren"
-              date="JETZT"
-              flagColor="#55EBD9"
-              progress={1}
-              description="Dr. Daniel Janke | 286"
-              onPress={this._onTouchCard}
-            />
-            <Appointment
-              title="Voruntersuchung"
-              date="BALD"
-              flagColor="#B2EB55"
-              time="12:00"
-              description="Dr. Daniel Janke | 286"
-            />
-            <Appointment
-              title="Fragebögen ausfüllen"
-              flagColor="#FFCC01"
-              progress={0.3}
-              description="Dr. Daniel Janke | 286"
-            />
-            <Appointment
-              lastEntry={true}
-              title="Sachen packen"
-              flagColor="#FFCC01"
-              progress={0.5}
-              description="Checklisten"
-            /> */}
           </View>
         </Animated.ScrollView>
       </ScrollView>
@@ -421,7 +417,7 @@ const styles = StyleSheet.create({
 
   segmentViewContainer: {
     flexDirection: 'row',
-    width: Dimensions.get('window').width * 2
+    width: Dimensions.get('window').width * 3
   },
   segmentView: {
     // flex: 1,
