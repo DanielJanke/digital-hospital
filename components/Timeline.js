@@ -21,6 +21,8 @@ import {
 import { ProgressCircle } from 'react-native-svg-charts';
 
 import Appointment from '../components/AppointmentCard';
+import TodoCard from '../components/TodoCard';
+
 import AnimatedPath from 'react-native-svg-charts/src/animated-path';
 
 const instructions = Platform.select({
@@ -54,15 +56,13 @@ export default class Timeline extends Component<Props> {
 
     this.props.navigator.push({
       // title: Strings.camera.title,
-      screen: 'example.AppointmentDetail'
+      // screen: 'example.AppointmentDetail'
+      screen: 'example.ChecklistDetailView'
     });
   };
 
   _onScrollSegmentView = event => {
-    console.log('x');
-
     this.xOffset = event.nativeEvent.contentOffset.x;
-    console.log(event.nativeEvent.contentOffset.x);
 
     if (this.xOffset === Dimensions.get('window').width) {
       Animated.parallel([
@@ -75,7 +75,6 @@ export default class Timeline extends Component<Props> {
           duration: 100
         })
       ]).start();
-
       this.refs._verticalScrollView.scrollTo({ x: 0, y: 0, animated: true });
     }
     if (this.xOffset === 0) {
@@ -100,9 +99,7 @@ export default class Timeline extends Component<Props> {
     });
   };
 
-  componentDidMount() {
-    console.log(this.state.indicatorColor[0]._value);
-  }
+  componentDidMount() {}
 
   render() {
     return (
@@ -120,10 +117,17 @@ export default class Timeline extends Component<Props> {
           style={styles.headerImage}
           source={require('../assets/header/Gradient.png')}
         >
-          <Text>Zimmer 2.023</Text>
           <Text style={styles.headline}>Max Mustermann</Text>
           <Text style={styles.subheadline}>Zimmer 2.023</Text>
-          <View style={styles.segmentContainer}>
+          {/* <View style={styles.segmentContainer}>
+            <Animated.Text style={[styles.segmentText]}>Timeline</Animated.Text>
+
+            <Animated.Text style={[styles.segmentText]}>
+              Einzelansicht
+            </Animated.Text>
+          </View> */}
+
+          <View style={styles.segmentContainerOverlay}>
             <TouchableOpacity
               onPress={() => {
                 this._onPressSegment(0);
@@ -194,7 +198,7 @@ export default class Timeline extends Component<Props> {
               date="JETZT"
               flagColor="#55EBD9"
               progress={1}
-              description="Dr. Daniel Janke | 286"
+              description="Rufen Sie uns an"
               onPress={this._onTouchCard}
             />
             <Appointment
@@ -222,26 +226,20 @@ export default class Timeline extends Component<Props> {
               Vorstationäre Untersuchung
             </Text>
             <Appointment
-              title="ASS Medikamente absetzen"
-              flagColor="#D40F14"
-              firstEntry={true}
-              description="Medikamente mit ASS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
-            />
-            <Appointment
-              title="Voruntersuchung"
+              title="Fahren Sie zu uns"
               date="12.03"
               flagColor="#FFCC01"
               time="12:00"
-              description="Dr. Daniel Janke | 286"
+              description="Wegbeschreibung"
+              firstEntry={true}
             />
 
             <Appointment
-              firstEntry={true}
-              title="Voruntersuchung"
+              title="Wartezeit"
               date="12.03"
               flagColor="#B2EB55"
-              time="12:00"
-              description="Dr. Daniel Janke | 286"
+              time="36 min"
+              description="Sie werden"
             />
             <Appointment
               title="Voruntersuchung"
@@ -253,36 +251,79 @@ export default class Timeline extends Component<Props> {
             />
             <Text style={styles.sectionHeadline}>Vor der Operation</Text>
             <Appointment
-              title="Voruntersuchung"
-              date="13.03"
-              flagColor="#B2EB55"
-              time="12:00"
-              description="Dr. Daniel Janke | 286"
+              flagColor="#D40F14"
+              title="ASS Medikamente absetzen"
+              date="14.03"
+              description="Medikamente mit ASS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
               firstEntry={true}
             />
-
             <Appointment
-              title="Voruntersuchung"
-              date="13.03"
               flagColor="#D40F14"
-              time="12:00"
-              description="Dr. Daniel Janke | 286"
+              title="BSS Medikamente absetzen"
+              date="15.03"
+              description="Medikamente mit BSS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Sachen packen"
+              description="Checklisten für Aufenth."
+              progress={0.0}
               lastEntry={true}
             />
+
             <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
             <Appointment
-              title="Voruntersuchung"
-              date="13.03"
+              onPress={this._onTouchCard}
               flagColor="#018C8E"
+              title="Operation"
+              description="Dr. Anna Borchert"
+              date="13.03"
               time="12:00"
-              description="Dr. Daniel Janke | 286"
+              firstEntry={true}
               lastEntry={true}
             />
             <Text style={styles.sectionHeadline}>Nach Ihrem Aufenthalt</Text>
+            <Appointment
+              flagColor="#B2EB55"
+              title="Noch zu erledigen"
+              description="Checklisten nach Aufenth."
+              progress={0.0}
+              firstEntry={true}
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Hausarztbesuch"
+              description="Rezepte abholen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Apothekenbesuch"
+              description="Rezepte einlösen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Monoposol einnehmen"
+              description="1 Tablette"
+              date="17.03"
+              time="12:00"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Monoposol einnehmen"
+              description="1 Tablette"
+              date="18.03"
+              time="12:00"
+              lastEntry={true}
+            />
           </View>
           <View style={styles.segmentViewx}>
             <Text style={styles.sectionHeadline}>Vorbereitung</Text>
-            <Appointment
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            <TodoCard title="Später Menü" description="Platzhalter" />
+            {/* <Appointment
               firstEntry={true}
               title="Termin vereinbaren"
               date="JETZT"
@@ -310,7 +351,7 @@ export default class Timeline extends Component<Props> {
               flagColor="#FFCC01"
               progress={0.5}
               description="Checklisten"
-            />
+            /> */}
           </View>
         </Animated.ScrollView>
       </ScrollView>
@@ -346,25 +387,30 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     marginLeft: 32,
-    marginTop: 24
+    marginTop: 32
   },
   subheadline: {
     marginLeft: 32,
     color: 'white',
     fontSize: 17,
-    marginBottom: 18
+    marginBottom: 24
   },
   sectionHeadline: {
     fontSize: 17,
     fontWeight: '600',
     marginTop: 32,
-    marginBottom: 24,
+    marginBottom: 16,
     textAlign: 'center',
     color: '#4E4E4E'
   },
   segmentContainer: {
     flexDirection: 'row',
     marginLeft: 32
+  },
+  segmentContainerOverlay: {
+    flexDirection: 'row',
+    marginLeft: 32
+    // left: '-100%'
   },
   segmentText: {
     fontSize: 17,
