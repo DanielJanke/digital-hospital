@@ -1,27 +1,32 @@
-import { AppRegistry } from "react-native";
-import { Navigation } from "react-native-navigation";
+import {
+  AppRegistry
+} from "react-native";
+import {
+  Navigation
+} from "react-native-navigation";
 
 import App from "./App";
 
 AppRegistry.registerComponent("digitalhospital", () => App);
 
-import { registerScreens } from "./screens";
+import {
+  registerScreens
+} from "./screens";
 
 registerScreens(); // this is where you register all of your app's screens
 
 Navigation.startTabBasedApp({
-  tabs: [
-    {
+  tabs: [{
       label: "Übersicht",
       screen: "example.MyArea", // this is a registered name for a screen
-      //   icon: require("../img/one.png"),
-      //   selectedIcon: require("../img/one_selected.png"), // iOS only
+      icon: require("./assets/tabbar/overview.png"),
       title: "Screen One",
       systemItem: "compose"
     },
     {
       label: "Karte",
-      screen: "example.MyArea",
+      screen: "example.MapView",
+      icon: require("./assets/tabbar/compass.png"),
       //   icon: require("../img/two.png"),
       //   selectedIcon: require("../img/two_selected.png"), // iOS only
       title: "Screen Two"
@@ -29,6 +34,7 @@ Navigation.startTabBasedApp({
     {
       label: "Informationen",
       screen: "example.MyArea",
+      icon: require("./assets/tabbar/more.png"),
       //   icon: require("../img/two.png"),
       //   selectedIcon: require("../img/two_selected.png"), // iOS only
       title: "Screen Two"

@@ -7,6 +7,7 @@ import AppointmentDetail from "../components/AppointmentDetail";
 import DoctorDetailView from "../components/DoctorDetailView";
 import ChecklistDetailView from "../components/ChecklistDetailView";
 import ChatbotView from "../components/ChatbotView";
+import MapView from "../components/MapView";
 
 // import PushedScreen from "./PushedScreen";
 
@@ -19,4 +20,5 @@ export function registerScreens() {
   Navigation.registerComponent("example.PushedScreen", () => MyArea);
 
   Navigation.registerComponent("example.ChatbotView", () => ChatbotView);
+  Navigation.registerComponent("example.MapView", () => MapView);
 }
