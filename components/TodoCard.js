@@ -20,6 +20,9 @@ export default class TodoCard extends Component<Props> {
     this.state = {
       active: false
     };
+
+    // let activeImage = require('../assets/todo-circle-filled.png');
+    // let inactiveImage = require('../assets/todo-circle-empty.png');
   }
   render() {
     const { date, flagColor, title, description, time, onPress } = this.props;

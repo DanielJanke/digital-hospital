@@ -64,6 +64,16 @@ export default class Timeline extends Component<Props> {
     });
   };
 
+  _onTouchCardChat = () => {
+    console.log('on');
+
+    this.props.navigator.push({
+      // title: Strings.camera.title,
+      // screen: 'example.AppointmentDetail'
+      screen: 'example.ChatbotView'
+    });
+  };
+
   _onPressSegment = pageIndex => {
     this._segmentScrollView.getNode().scrollTo({
       x: pageIndex * Dimensions.get('window').width,
@@ -253,6 +263,16 @@ export default class Timeline extends Component<Props> {
           >
             <View style={styles.segmentViewx}>
               <Text style={styles.sectionHeadline}>Chatbot</Text>
+              <Appointment
+                firstEntry={true}
+                lastEntry={true}
+                title="Chatbot aufufen"
+                date="JETZT"
+                flagColor="#55EBD9"
+                progress={1}
+                description="Rufen Sie uns an"
+                onPress={this._onTouchCardChat}
+              />
               <TodoCard title="Später Menü" description="Platzhalter" />
               <TodoCard title="Später Menü" description="Platzhalter" />
               <TodoCard title="Später Menü" description="Platzhalter" />

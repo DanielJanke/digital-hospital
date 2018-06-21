@@ -15,6 +15,15 @@ const styles = {
     description: {
       fontSize: 17,
       color: '#737373'
+    },
+    chatbotText: {
+      fontSize: 19,
+      color: 'white'
+    },
+    chatbotButtonText: {
+      fontSize: 17,
+      color: '#004B93',
+      fontWeight: '700'
     }
   }
 }
