@@ -18,8 +18,11 @@ export default class ChecklistDetailView extends Component<Props> {
   static navigatorStyle = {
     // navBarHidden: true,
     navBarTranslucent: true,
-    navBarBackgroundColor: 'black',
-    tabBarHidden: true
+    // navBarBackgroundColor: '#F9F8F5',
+    navBarBackgroundColor: '#4F92DE',
+    tabBarHidden: true,
+    statusBarTextColorScheme: 'light',
+    navBarLeftButtonColor: 'white'
   };
 
   _onPressItem = () => {};
@@ -28,7 +31,7 @@ export default class ChecklistDetailView extends Component<Props> {
     const { date, flagColor, title, description, time, onPress } = this.props;
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.header} />
+        {/* <View style={styles.header} /> */}
         <View style={styles.content}>
           <Text style={styles.title}>Vorbeitung mitbringen</Text>
           <Text style={styles.body}>
@@ -62,6 +65,7 @@ const styles = StyleSheet.create({
     marginBottom: 64
   },
   content: {
+    marginTop: 32,
     paddingHorizontal: 16
   },
   title: {

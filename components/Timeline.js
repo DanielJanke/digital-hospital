@@ -53,6 +53,13 @@ export default class Timeline extends Component<Props> {
     };
   }
 
+  componentDidMount() {
+    // this._segmentScrollView.getNode().scrollTo({
+    //   x: 1 * Dimensions.get('window').width,
+    //   animated: true
+    // });
+  }
+
   _onTouchCard = () => {
     console.log('on');
 
@@ -82,8 +89,6 @@ export default class Timeline extends Component<Props> {
     });
   };
 
-  componentDidMount() {}
-
   render() {
     return (
       <React.Fragment>
@@ -93,7 +98,8 @@ export default class Timeline extends Component<Props> {
         />
         <Animated.ScrollView
           style={styles.container}
-          ref="_verticalScrollView"
+          // ref="_verticalScrollView"
+          ref={c => (this._verticalScrollView = c)}
           onScroll={Animated.event(
             [
               {
@@ -246,7 +252,6 @@ export default class Timeline extends Component<Props> {
             horizontal={true}
             // onScroll={this._onScrollSegmentViewNew}
             onScroll={Animated.event(
-              // scrollX = e.nativeEvent.contentOffset.x
               [
                 {
                   nativeEvent: {

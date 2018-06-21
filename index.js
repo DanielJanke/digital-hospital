@@ -20,7 +20,7 @@ Navigation.startTabBasedApp({
       label: "Übersicht",
       screen: "example.MyArea", // this is a registered name for a screen
       icon: require("./assets/tabbar/overview.png"),
-      title: "Screen One",
+      title: "",
       systemItem: "compose"
     },
     {
@@ -39,5 +39,10 @@ Navigation.startTabBasedApp({
       //   selectedIcon: require("../img/two_selected.png"), // iOS only
       title: "Screen Two"
     }
-  ]
+  ],
+  tabsStyle: {
+    tabBarTranslucent: true,
+    tabBarHidden: true,
+  }
+
 });
