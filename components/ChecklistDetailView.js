@@ -16,7 +16,9 @@ type Props = {};
 
 export default class ChecklistDetailView extends Component<Props> {
   static navigatorStyle = {
-    navBarHidden: true,
+    // navBarHidden: true,
+    navBarTranslucent: true,
+    navBarBackgroundColor: 'black',
     tabBarHidden: true
   };
 

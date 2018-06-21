@@ -18,7 +18,23 @@ const checklistdata = {
     {
       title: "Röntgenbilder, MRT-/ CT-Bilder",
       description: "Möglichst auf CD"
-    }
+    },
+    {
+      title: "Laborwerte",
+      description: "Untersuchungsbefunde & Berichte"
+    },
+    {
+      title: "Medizinische Ausweise",
+      description: "Möglichst auf CD"
+    },
+    {
+      title: "Juristische Dokumente",
+      description: "z.B. Patientenverfügung, Vorsorgevollmacht"
+    },
+    {
+      title: "Kontakdaten Angehöriger",
+      description: "Name und Telefonnummer"
+    },
   ]
 }
 

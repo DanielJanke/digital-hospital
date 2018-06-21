@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 18,
-    width: 36,
-    height: 36
+    width: 32,
+    height: 32
   }
 });
