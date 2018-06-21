@@ -54,20 +54,18 @@ export default class Timeline extends Component<Props> {
   }
 
   componentDidMount() {
-    // this._segmentScrollView.getNode().scrollTo({
-    //   x: 1 * Dimensions.get('window').width,
-    //   animated: true
-    // });
+    this._segmentScrollView.getNode().scrollTo({
+      x: 1 * Dimensions.get('window').width,
+      animated: true
+    });
   }
 
-  _onTouchCard = () => {
-    console.log('on');
-
+  _onTouchCard = screen => {
     this.props.navigator.push({
       // title: Strings.camera.title,
       // screen: 'example.AppointmentDetail'
       title: 'Checkliste Vorbereitung',
-      screen: 'example.ChecklistDetailView'
+      screen: screen
     });
   };
 
@@ -276,7 +274,9 @@ export default class Timeline extends Component<Props> {
                 flagColor="#55EBD9"
                 progress={1}
                 description="Rufen Sie uns an"
-                onPress={this._onTouchCardChat}
+                onPress={() => {
+                  this._onTouchCard('example.ChatbotView');
+                }}
               />
               <TodoCard title="Später Menü" description="Platzhalter" />
               <TodoCard title="Später Menü" description="Platzhalter" />
@@ -285,6 +285,36 @@ export default class Timeline extends Component<Props> {
               <TodoCard title="Später Menü" description="Platzhalter" />
             </View>
             <View style={styles.segmentViewx}>
+              <Text style={styles.sectionHeadline}>Dev Menü</Text>
+              <Appointment
+                firstEntry={true}
+                title="ChecklistDetailView"
+                flagColor="#55EBD9"
+                description="Checklisten"
+                onPress={() => {
+                  this._onTouchCard('example.ChecklistDetailView');
+                }}
+              />
+
+              <Appointment
+                lastEntry={true}
+                title="ChatBotView"
+                flagColor="#55EBD9"
+                description="Chatbot"
+                onPress={() => {
+                  this._onTouchCard('example.ChatbotView');
+                }}
+              />
+              <Appointment
+                lastEntry={true}
+                title="FormDetailView"
+                flagColor="#55EBD9"
+                description="Chatbot"
+                onPress={() => {
+                  this._onTouchCard('example.FormDetailView');
+                }}
+              />
+
               <Text style={styles.sectionHeadline}>Vorbereitung</Text>
               <Appointment
                 firstEntry={true}
@@ -293,7 +323,9 @@ export default class Timeline extends Component<Props> {
                 flagColor="#55EBD9"
                 progress={1}
                 description="Rufen Sie uns an"
-                onPress={this._onTouchCard}
+                onPress={() => {
+                  this._onTouchCard('example.ChecklistDetailView');
+                }}
               />
               <Appointment
                 title="Voruntersuchung"
@@ -310,10 +342,13 @@ export default class Timeline extends Component<Props> {
               />
               <Appointment
                 lastEntry={true}
-                title="Sachen packen"
                 flagColor="#FFCC01"
                 progress={0.5}
+                title="Sachen packen"
                 description="Checklisten"
+                onPress={() => {
+                  this._onTouchCard('example.ChecklistDetailView');
+                }}
               />
 
               <Text style={styles.sectionHeadline}>
