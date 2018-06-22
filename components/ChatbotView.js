@@ -35,7 +35,7 @@ export default class ChecklistDetailView extends Component<Props> {
             Aufenthalt so angenehm wie möglich zu machen würden wir Ihnen gerne
             vorab ein paar Fragen stellen.
           </Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={extStyles.text.chatbotButton}>
             <Text style={extStyles.text.chatbotButtonText}>Verstanden</Text>
           </TouchableOpacity>
         </ImageBackground>

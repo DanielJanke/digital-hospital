@@ -19,11 +19,12 @@ import {
   Easing
 } from 'react-native';
 import { ProgressCircle } from 'react-native-svg-charts';
+import AnimatedPath from 'react-native-svg-charts/src/animated-path';
 
 import Appointment from '../components/AppointmentCard';
 import TodoCard from '../components/TodoCard';
 
-import AnimatedPath from 'react-native-svg-charts/src/animated-path';
+import extStyles from '../assets/styles';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -42,22 +43,17 @@ export default class Timeline extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      indicatorPosition: new Animated.Value(0),
       scrollX: new Animated.Value(0),
       scrollY: new Animated.Value(0),
-      indicatorWidth: new Animated.Value(100),
-      indicatorColor: [
-        new Animated.Value('rgb(97,97,97)'),
-        new Animated.Value('rgb(255,255,255)')
-      ]
+      verticalScrollingEnabled: true
     };
   }
 
   componentDidMount() {
-    this._segmentScrollView.getNode().scrollTo({
-      x: 1 * Dimensions.get('window').width,
-      animated: true
-    });
+    // this._segmentScrollView.getNode().scrollTo({
+    //   x: 1 * Dimensions.get('window').width,
+    //   animated: true
+    // });
   }
 
   _onTouchCard = screen => {
@@ -88,6 +84,7 @@ export default class Timeline extends Component<Props> {
   };
 
   render() {
+    let verticalScrollingEnabled = this.state.scrollX > 0 ? true : false;
     return (
       <React.Fragment>
         <Animated.Image
@@ -98,6 +95,7 @@ export default class Timeline extends Component<Props> {
           style={styles.container}
           // ref="_verticalScrollView"
           ref={c => (this._verticalScrollView = c)}
+          scrollEnabled={this.state.verticalScrollingEnabled}
           onScroll={Animated.event(
             [
               {
@@ -108,7 +106,9 @@ export default class Timeline extends Component<Props> {
                 }
               }
             ],
-            { useNativeDriver: true }
+            {
+              useNativeDriver: false
+            }
           )}
           scrollEventThrottle={16}
         >
@@ -116,6 +116,12 @@ export default class Timeline extends Component<Props> {
             resizeMode="cover"
             style={[
               styles.headerImage,
+              // {
+              //   opacity: this.state.scrollX.interpolate({
+              //     inputRange: [0, 414, 828],
+              //     outputRange: [0, 1, 1]
+              //   })
+              // },
               {
                 transform: [
                   {
@@ -133,30 +139,36 @@ export default class Timeline extends Component<Props> {
                 ]
               }
             ]}
-            source={require('../assets/header/Gradient.png')}
+            // source={require('../assets/header/Gradient.png')}
+            source={require('../assets/header/headernew.png')}
           />
           <Animated.View
-          // style={{
-          //   transform: [
-          //     {
-          //       translateY: this.state.scrollY.interpolate({
-          //         inputRange: [-1, 0, 1],
-          //         outputRange: [-1, 0, 0]
-          //       })
-          //     }
-          //   ]
-          // }}
+            style={[
+              styles.headerContent,
+              {
+                opacity: this.state.scrollX.interpolate({
+                  inputRange: [0, 414, 828],
+                  outputRange: [0, 1, 1]
+                })
+              }
+            ]}
           >
             <Text style={styles.headline}>Max Mustermann</Text>
             <Text style={styles.subheadline}>Zimmer 2.023</Text>
+          </Animated.View>
 
-            <View style={styles.segmentContainerOverlay}>
-              <TouchableOpacity
-                onPress={() => {
-                  this._onPressSegment(0);
-                }}
-              >
-                <Animated.Text
+          <View style={styles.segmentContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                this._onPressSegment(0);
+              }}
+            >
+              <Animated.Image
+                style={styles.assistentSegment}
+                source={require('../assets/ukb_logo.png')}
+              />
+
+              {/* <Animated.Text
                   style={[
                     styles.segmentText,
                     {
@@ -172,82 +184,107 @@ export default class Timeline extends Component<Props> {
                   ]}
                 >
                   Assistent
-                </Animated.Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this._onPressSegment(1);
-                }}
-              >
-                <Animated.Text
-                  style={[
-                    styles.segmentText,
-                    {
-                      color: this.state.scrollX.interpolate({
-                        inputRange: [0, 414, 828],
-                        outputRange: [
-                          'rgba(255, 255, 255, 1)',
-                          'rgba(97, 97, 97, 1)',
-                          'rgba(255, 255, 255, 1)'
-                        ]
-                      })
-                    }
-                  ]}
-                >
-                  Timeline
-                </Animated.Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  this._onPressSegment(2);
-                }}
-              >
-                <Animated.Text
-                  style={[
-                    styles.segmentText,
-                    {
-                      color: this.state.scrollX.interpolate({
-                        inputRange: [0, 414, 828],
-                        outputRange: [
-                          'rgba(255, 255, 255, 1)',
-                          'rgba(255, 255, 255, 1)',
-                          'rgba(97, 97, 97, 1)'
-                        ]
-                      })
-                    }
-                  ]}
-                >
-                  Einzelansicht
-                </Animated.Text>
-              </TouchableOpacity>
-              <Animated.View
+                </Animated.Text> */}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this._onPressSegment(1);
+              }}
+            >
+              <Animated.Text
                 style={[
-                  styles.indicator,
+                  styles.segmentText,
                   {
-                    transform: [
-                      {
-                        translateX: this.state.scrollX.interpolate({
-                          inputRange: [0, 414, 828],
-                          outputRange: [4, 110, 210]
-                        })
-                      }
-                    ]
+                    color: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
+                      outputRange: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(97, 97, 97, 1)',
+                        'rgba(255, 255, 255, 1)'
+                      ]
+                    })
                   },
                   {
-                    width: this.state.scrollX.interpolate({
+                    opacity: this.state.scrollX.interpolate({
                       inputRange: [0, 414, 828],
-                      outputRange: [100, 90, 130]
+                      outputRange: [0.5, 1, 1]
                     })
                   }
                 ]}
-              />
-            </View>
-          </Animated.View>
+              >
+                Timeline
+              </Animated.Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                this._onPressSegment(2);
+              }}
+            >
+              <Animated.Text
+                style={[
+                  styles.segmentText,
+                  {
+                    color: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
+                      outputRange: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(97, 97, 97, 1)'
+                      ]
+                    })
+                  },
+                  {
+                    opacity: this.state.scrollX.interpolate({
+                      inputRange: [0, 414, 828],
+                      outputRange: [0.5, 1, 1]
+                    })
+                  }
+                ]}
+              >
+                Einzelansicht
+              </Animated.Text>
+            </TouchableOpacity>
+            <Animated.View
+              style={[
+                styles.indicator,
+                {
+                  transform: [
+                    {
+                      translateX: this.state.scrollX.interpolate({
+                        inputRange: [0, 414, 828],
+                        outputRange: [7, 78, 178]
+                      })
+                    },
+                    {
+                      translateY: this.state.scrollX.interpolate({
+                        inputRange: [0, 414, 828],
+                        outputRange: [-17, 0, 0]
+                      })
+                    }
+                  ]
+                },
+                {
+                  width: this.state.scrollX.interpolate({
+                    inputRange: [0, 414, 828],
+                    outputRange: [60, 90, 130]
+                  })
+                },
+                {
+                  height: this.state.scrollX.interpolate({
+                    inputRange: [0, 414, 828],
+                    outputRange: [60, 28, 28]
+                  })
+                }
+              ]}
+            />
+          </View>
+
           <Animated.ScrollView
             showsHorizontalScrollIndicator={false}
             pagingEnabled={true}
             contentContainerStyle={styles.segmentViewContainer}
             horizontal={true}
+            bounces={false}
             // onScroll={this._onScrollSegmentViewNew}
             onScroll={Animated.event(
               [
@@ -259,62 +296,66 @@ export default class Timeline extends Component<Props> {
                   }
                 }
               ],
-              { useNativeDriver: false }
+              {
+                useNativeDriver: false
+                // listener: event => {
+                //   const offsetX = event.nativeEvent.contentOffset.x;
+                //   if (offsetX > 100) {
+                //     this.setState({
+                //       verticalScrollingEnabled: true
+                //     });
+                //   } else if (this.state.verticalScrollingEnabled != false) {
+                //     this.setState({
+                //       verticalScrollingEnabled: false
+                //     });
+                //     this._verticalScrollView.getNode().scrollTo({
+                //       x: 0 * Dimensions.get('window').width,
+                //       animated: true
+                //     });
+                //   }
+                // }
+              }
             )}
             scrollEventThrottle={16}
             ref={c => (this._segmentScrollView = c)}
           >
-            <View style={styles.segmentViewx}>
-              <Text style={styles.sectionHeadline}>Chatbot</Text>
-              <Appointment
-                firstEntry={true}
-                lastEntry={true}
-                title="Chatbot aufufen"
-                date="JETZT"
-                flagColor="#55EBD9"
-                progress={1}
-                description="Rufen Sie uns an"
-                onPress={() => {
-                  this._onTouchCard('example.ChatbotView');
-                }}
-              />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-            </View>
-            <View style={styles.segmentViewx}>
-              <Text style={styles.sectionHeadline}>Dev Menü</Text>
-              <Appointment
-                firstEntry={true}
-                title="ChecklistDetailView"
-                flagColor="#55EBD9"
-                description="Checklisten"
-                onPress={() => {
-                  this._onTouchCard('example.ChecklistDetailView');
-                }}
-              />
+            <Animated.View
+              style={[
+                styles.segmentViewx,
 
-              <Appointment
-                lastEntry={true}
-                title="ChatBotView"
-                flagColor="#55EBD9"
-                description="Chatbot"
-                onPress={() => {
-                  this._onTouchCard('example.ChatbotView');
-                }}
+                {
+                  opacity: this.state.scrollX.interpolate({
+                    inputRange: [0, 212, 414, 828],
+                    outputRange: [1, 0, 0, 0]
+                  })
+                }
+              ]}
+            >
+              <View style={styles.chatBotView}>
+                <Text style={[extStyles.text.chatbotText, styles.chatBotText]}>
+                  Hallo Max,{'\n'}
+                  wenn du eine Frage hast kann ich Sie dir beantworten.
+                </Text>
+                <TouchableOpacity style={extStyles.text.chatbotButton}>
+                  <Text style={extStyles.text.chatbotButtonText}>
+                    Verstanden
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <Animated.Image
+                style={[
+                  styles.chatBotBackground
+                  // {
+                  //   opacity: this.state.scrollX.interpolate({
+                  //     inputRange: [0, 212, 414, 828],
+                  //     outputRange: [1, 0, 0, 0]
+                  //   })
+                  // }
+                ]}
+                source={require('../assets/chatbackground.png')}
               />
-              <Appointment
-                lastEntry={true}
-                title="FormDetailView"
-                flagColor="#55EBD9"
-                description="Chatbot"
-                onPress={() => {
-                  this._onTouchCard('example.FormDetailView');
-                }}
-              />
-
+            </Animated.View>
+            <View style={styles.segmentViewx}>
               <Text style={styles.sectionHeadline}>Vorbereitung</Text>
               <Appointment
                 firstEntry={true}
@@ -348,6 +389,36 @@ export default class Timeline extends Component<Props> {
                 description="Checklisten"
                 onPress={() => {
                   this._onTouchCard('example.ChecklistDetailView');
+                }}
+              />
+
+              <Text style={styles.sectionHeadline}>Dev Menü</Text>
+              <Appointment
+                firstEntry={true}
+                title="ChecklistDetailView"
+                flagColor="#55EBD9"
+                description="Checklisten"
+                onPress={() => {
+                  this._onTouchCard('example.ChecklistDetailView');
+                }}
+              />
+
+              <Appointment
+                lastEntry={true}
+                title="ChatBotView"
+                flagColor="#55EBD9"
+                description="Chatbot"
+                onPress={() => {
+                  this._onTouchCard('example.ChatbotView');
+                }}
+              />
+              <Appointment
+                lastEntry={true}
+                title="FormDetailView"
+                flagColor="#55EBD9"
+                description="Chatbot"
+                onPress={() => {
+                  this._onTouchCard('example.FormDetailView');
                 }}
               />
 
@@ -471,6 +542,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10
   },
+  chatBotBackground: {
+    position: 'absolute',
+    zIndex: -10,
+    marginTop: -167
+  },
   instructions: {
     textAlign: 'center',
     color: '#333333',
@@ -483,7 +559,11 @@ const styles = StyleSheet.create({
     width: 414,
     height: 167,
     marginTop: 0,
-    position: 'absolute'
+    position: 'absolute',
+    zIndex: 1
+  },
+  headerContent: {
+    zIndex: 2
   },
   headline: {
     color: 'white',
@@ -508,12 +588,9 @@ const styles = StyleSheet.create({
   },
   segmentContainer: {
     flexDirection: 'row',
-    marginLeft: 32
-  },
-  segmentContainerOverlay: {
-    flexDirection: 'row',
     marginLeft: 32,
-    marginBottom: 32
+    marginBottom: 32,
+    zIndex: 2
     // left: '-100%'
   },
   segmentText: {
@@ -522,7 +599,20 @@ const styles = StyleSheet.create({
     // color: 'white',
     marginRight: 32
   },
-
+  assistentSegment: {
+    marginRight: 32,
+    marginTop: -2,
+    height: 28,
+    width: 41
+  },
+  chatBotView: {
+    marginTop: 64,
+    paddingHorizontal: 32,
+    justifyContent: 'center'
+  },
+  chatBotText: {
+    marginBottom: 16
+  },
   segmentViewContainer: {
     flexDirection: 'row',
     width: Dimensions.get('window').width * 3
