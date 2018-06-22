@@ -13,6 +13,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  TextInput,
   View,
   Dimensions,
   Animated,
@@ -22,6 +23,7 @@ import { ProgressCircle } from 'react-native-svg-charts';
 import AnimatedPath from 'react-native-svg-charts/src/animated-path';
 
 import Appointment from '../components/AppointmentCard';
+import MenuCell from '../components/MenuCell';
 import TodoCard from '../components/TodoCard';
 
 import extStyles from '../assets/styles';
@@ -44,16 +46,16 @@ export default class Timeline extends Component<Props> {
     super(props);
     this.state = {
       scrollX: new Animated.Value(0),
-      scrollY: new Animated.Value(0),
+      scrollY: new Animated.Value(-167),
       verticalScrollingEnabled: true
     };
   }
 
   componentDidMount() {
-    // this._segmentScrollView.getNode().scrollTo({
-    //   x: 1 * Dimensions.get('window').width,
-    //   animated: true
-    // });
+    this._segmentScrollView.getNode().scrollTo({
+      x: 1 * Dimensions.get('window').width,
+      animated: true
+    });
   }
 
   _onTouchCard = screen => {
@@ -64,17 +66,6 @@ export default class Timeline extends Component<Props> {
       screen: screen
     });
   };
-
-  _onTouchCardChat = () => {
-    console.log('on');
-
-    this.props.navigator.push({
-      // title: Strings.camera.title,
-      // screen: 'example.AppointmentDetail'
-      screen: 'example.ChatbotView'
-    });
-  };
-
   _onPressSegment = pageIndex => {
     this._segmentScrollView.getNode().scrollTo({
       x: pageIndex * Dimensions.get('window').width,
@@ -91,26 +82,24 @@ export default class Timeline extends Component<Props> {
           style={[styles.statusBar]}
           source={require('../assets/header/headerstatusbar.png')}
         />
-        <Animated.ScrollView
-          style={styles.container}
-          // ref="_verticalScrollView"
-          ref={c => (this._verticalScrollView = c)}
-          scrollEnabled={this.state.verticalScrollingEnabled}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: this.state.scrollY
-                  }
-                }
-              }
-            ],
+
+        {/* HEADER */}
+
+        <Animated.View
+          shouldRasterizeIOS={true}
+          style={[
+            styles.headerContainer,
             {
-              useNativeDriver: false
+              transform: [
+                {
+                  translateY: this.state.scrollY.interpolate({
+                    inputRange: [-168, -167, -166],
+                    outputRange: [0, 0, -1]
+                  })
+                }
+              ]
             }
-          )}
-          scrollEventThrottle={16}
+          ]}
         >
           <Animated.Image
             resizeMode="cover"
@@ -123,23 +112,22 @@ export default class Timeline extends Component<Props> {
               //   })
               // },
               {
-                transform: [
-                  {
-                    translateY: this.state.scrollY.interpolate({
-                      inputRange: [-1, 0, 1],
-                      outputRange: [-1, 0, 0]
-                    })
-                  },
-                  {
-                    scale: this.state.scrollY.interpolate({
-                      inputRange: [-50, 0, 1],
-                      outputRange: [1.4, 1, 1]
-                    })
-                  }
-                ]
+                // transform: [
+                //   {
+                //     translateY: this.state.scrollY.interpolate({
+                //       inputRange: [-1, 0, 1],
+                //       outputRange: [-1, 0, 1]
+                //     })
+                //   },
+                //   {
+                //     scale: this.state.scrollY.interpolate({
+                //       inputRange: [-50, 0, 1],
+                //       outputRange: [1.4, 1, 1]
+                //     })
+                //   }
+                // ]
               }
             ]}
-            // source={require('../assets/header/Gradient.png')}
             source={require('../assets/header/headernew.png')}
           />
           <Animated.View
@@ -159,6 +147,7 @@ export default class Timeline extends Component<Props> {
 
           <View style={styles.segmentContainer}>
             <TouchableOpacity
+              hitSlop={{ top: 16, left: 24, bottom: 16, right: 16 }}
               onPress={() => {
                 this._onPressSegment(0);
               }}
@@ -167,26 +156,9 @@ export default class Timeline extends Component<Props> {
                 style={styles.assistentSegment}
                 source={require('../assets/ukb_logo.png')}
               />
-
-              {/* <Animated.Text
-                  style={[
-                    styles.segmentText,
-                    {
-                      color: this.state.scrollX.interpolate({
-                        inputRange: [0, 414, 828],
-                        outputRange: [
-                          'rgba(97, 97, 97, 1)',
-                          'rgba(255, 255, 255, 1)',
-                          'rgba(255, 255, 255, 1)'
-                        ]
-                      })
-                    }
-                  ]}
-                >
-                  Assistent
-                </Animated.Text> */}
             </TouchableOpacity>
             <TouchableOpacity
+              hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
               onPress={() => {
                 this._onPressSegment(1);
               }}
@@ -216,6 +188,7 @@ export default class Timeline extends Component<Props> {
               </Animated.Text>
             </TouchableOpacity>
             <TouchableOpacity
+              hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
               onPress={() => {
                 this._onPressSegment(2);
               }}
@@ -245,6 +218,7 @@ export default class Timeline extends Component<Props> {
               </Animated.Text>
             </TouchableOpacity>
             <Animated.View
+              shouldRasterizeIOS={true}
               style={[
                 styles.indicator,
                 {
@@ -278,253 +252,280 @@ export default class Timeline extends Component<Props> {
               ]}
             />
           </View>
+        </Animated.View>
+
+        {/* SCROLLVIEW HORIZONTAL */}
+        <Animated.ScrollView
+          contentContainerStyle={styles.container}
+          ref={c => (this._segmentScrollView = c)}
+          scrollEnabled={this.state.verticalScrollingEnabled}
+          horizontal={true}
+          pagingEnabled={true}
+          bounces={false}
+          showsHorizontalScrollIndicator={false}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    x: this.state.scrollX
+                  }
+                }
+              }
+            ],
+            {
+              useNativeDriver: false,
+              listener: event => {
+                if (event.nativeEvent.contentOffset.x === 0) {
+                  this.refs._textInput.focus();
+                } else {
+                  this.refs._textInput.blur();
+                }
+              }
+            }
+          )}
+          scrollEventThrottle={16}
+        >
+          <Animated.View
+            style={[
+              styles.segmentViewx,
+
+              {
+                opacity: this.state.scrollX.interpolate({
+                  inputRange: [0, 212, 414, 828],
+                  outputRange: [1, 0, 0, 0]
+                })
+              }
+            ]}
+          >
+            <View style={styles.chatBotView}>
+              <Text style={[extStyles.text.chatbotText, styles.chatBotText]}>
+                Hallo Max,{'\n'}
+                wenn du eine Frage hast, stell sie.
+              </Text>
+              <TextInput ref="_textInput" placeholder="Gib deine Frage ein" />
+              <TouchableOpacity style={extStyles.text.chatbotButton}>
+                <Text style={extStyles.text.chatbotButtonText}>Verstanden</Text>
+              </TouchableOpacity>
+            </View>
+            <Animated.Image
+              style={[styles.chatBotBackground]}
+              source={require('../assets/chatbackground.png')}
+            />
+          </Animated.View>
 
           <Animated.ScrollView
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled={true}
-            contentContainerStyle={styles.segmentViewContainer}
-            horizontal={true}
-            bounces={false}
-            // onScroll={this._onScrollSegmentViewNew}
+            style={[styles.segmentViewx]}
+            contentInset={{ top: 167, left: 0, bottom: 0, right: 0 }}
+            contentOffset={{ x: 0, y: -167 }}
+            scrollEventThrottle={16}
             onScroll={Animated.event(
               [
                 {
                   nativeEvent: {
                     contentOffset: {
-                      x: this.state.scrollX
+                      y: this.state.scrollY
                     }
                   }
                 }
               ],
               {
-                useNativeDriver: false
-                // listener: event => {
-                //   const offsetX = event.nativeEvent.contentOffset.x;
-                //   if (offsetX > 100) {
-                //     this.setState({
-                //       verticalScrollingEnabled: true
-                //     });
-                //   } else if (this.state.verticalScrollingEnabled != false) {
-                //     this.setState({
-                //       verticalScrollingEnabled: false
-                //     });
-                //     this._verticalScrollView.getNode().scrollTo({
-                //       x: 0 * Dimensions.get('window').width,
-                //       animated: true
-                //     });
-                //   }
-                // }
+                useNativeDriver: true
               }
             )}
-            scrollEventThrottle={16}
-            ref={c => (this._segmentScrollView = c)}
           >
-            <Animated.View
-              style={[
-                styles.segmentViewx,
+            <Text style={styles.sectionHeadline}>Vorbereitung</Text>
+            <Appointment
+              firstEntry={true}
+              title="Termin vereinbaren"
+              date="JETZT"
+              flagColor="#55EBD9"
+              progress={1}
+              description="Rufen Sie uns an"
+              onPress={() => {
+                this._onTouchCard('example.ChecklistDetailView');
+              }}
+            />
+            <Appointment
+              title="Voruntersuchung"
+              date="BALD"
+              flagColor="#B2EB55"
+              time="12:00"
+              description="Dr. Daniel Janke | 286"
+            />
+            <Appointment
+              title="Fragebögen ausfüllen"
+              flagColor="#FFCC01"
+              progress={0.3}
+              description="Dr. Daniel Janke | 286"
+            />
+            <Appointment
+              lastEntry={true}
+              flagColor="#FFCC01"
+              progress={0.5}
+              title="Sachen packen"
+              description="Checklisten"
+              onPress={() => {
+                this._onTouchCard('example.ChecklistDetailView');
+              }}
+            />
 
+            <Text style={styles.sectionHeadline}>Dev Menü</Text>
+            <Appointment
+              firstEntry={true}
+              title="ChecklistDetailView"
+              flagColor="#55EBD9"
+              description="Checklisten"
+              onPress={() => {
+                this._onTouchCard('example.ChecklistDetailView');
+              }}
+            />
+
+            <Appointment
+              lastEntry={true}
+              title="ChatBotView"
+              flagColor="#55EBD9"
+              description="Chatbot"
+              onPress={() => {
+                this._onTouchCard('example.ChatbotView');
+              }}
+            />
+            <Appointment
+              lastEntry={true}
+              title="FormDetailView"
+              flagColor="#55EBD9"
+              description="Chatbot"
+              onPress={() => {
+                this._onTouchCard('example.FormDetailView');
+              }}
+            />
+
+            <Text style={styles.sectionHeadline}>
+              Vorstationäre Untersuchung
+            </Text>
+            <Appointment
+              title="Fahren Sie zu uns"
+              date="12.03"
+              flagColor="#FFCC01"
+              time="12:00"
+              description="Wegbeschreibung"
+              firstEntry={true}
+            />
+
+            <Appointment
+              title="Wartezeit"
+              date="12.03"
+              flagColor="#B2EB55"
+              time="36 min"
+              description="Sie werden aufgerufen"
+            />
+            <Appointment
+              title="Voruntersuchung"
+              date="12.03"
+              flagColor="#55EBD9"
+              time="12:00"
+              lastEntry={true}
+              description="Dr. Daniel Janke | 286"
+            />
+            <Text style={styles.sectionHeadline}>Vor der Operation</Text>
+            <Appointment
+              flagColor="#D40F14"
+              title="ASS Medikamente absetzen"
+              date="14.03"
+              description="Medikamente mit ASS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
+              firstEntry={true}
+            />
+            <Appointment
+              flagColor="#D40F14"
+              title="BSS Medikamente absetzen"
+              date="15.03"
+              description="Medikamente mit BSS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Sachen packen"
+              description="Checklisten für Aufenth."
+              progress={0.0}
+              lastEntry={true}
+            />
+
+            <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
+            <Appointment
+              onPress={this._onTouchCard}
+              flagColor="#018C8E"
+              title="Operation"
+              description="Dr. Anna Borchert"
+              date="13.03"
+              time="12:00"
+              firstEntry={true}
+              lastEntry={true}
+            />
+            <Text style={styles.sectionHeadline}>Nach Ihrem Aufenthalt</Text>
+            <Appointment
+              flagColor="#B2EB55"
+              title="Noch zu erledigen"
+              description="Checklisten nach Aufenth."
+              progress={0.0}
+              firstEntry={true}
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Hausarztbesuch"
+              description="Rezepte abholen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Apothekenbesuch"
+              description="Rezepte einlösen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Monoposol einnehmen"
+              description="1 Tablette"
+              date="17.03"
+              time="12:00"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Monoposol einnehmen"
+              description="1 Tablette"
+              date="18.03"
+              time="12:00"
+              lastEntry={true}
+            />
+          </Animated.ScrollView>
+
+          <Animated.ScrollView
+            style={styles.segmentViewx}
+            contentInset={{ top: 167, left: 0, bottom: 0, right: 0 }}
+            contentOffset={{ x: 0, y: -167 }}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [
                 {
-                  opacity: this.state.scrollX.interpolate({
-                    inputRange: [0, 212, 414, 828],
-                    outputRange: [1, 0, 0, 0]
-                  })
+                  nativeEvent: {
+                    contentOffset: {
+                      y: this.state.scrollY
+                    }
+                  }
                 }
-              ]}
-            >
-              <View style={styles.chatBotView}>
-                <Text style={[extStyles.text.chatbotText, styles.chatBotText]}>
-                  Hallo Max,{'\n'}
-                  wenn du eine Frage hast kann ich Sie dir beantworten.
-                </Text>
-                <TouchableOpacity style={extStyles.text.chatbotButton}>
-                  <Text style={extStyles.text.chatbotButtonText}>
-                    Verstanden
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <Animated.Image
-                style={[
-                  styles.chatBotBackground
-                  // {
-                  //   opacity: this.state.scrollX.interpolate({
-                  //     inputRange: [0, 212, 414, 828],
-                  //     outputRange: [1, 0, 0, 0]
-                  //   })
-                  // }
-                ]}
-                source={require('../assets/chatbackground.png')}
-              />
-            </Animated.View>
-            <View style={styles.segmentViewx}>
-              <Text style={styles.sectionHeadline}>Vorbereitung</Text>
-              <Appointment
-                firstEntry={true}
-                title="Termin vereinbaren"
-                date="JETZT"
-                flagColor="#55EBD9"
-                progress={1}
-                description="Rufen Sie uns an"
-                onPress={() => {
-                  this._onTouchCard('example.ChecklistDetailView');
-                }}
-              />
-              <Appointment
-                title="Voruntersuchung"
-                date="BALD"
-                flagColor="#B2EB55"
-                time="12:00"
-                description="Dr. Daniel Janke | 286"
-              />
-              <Appointment
-                title="Fragebögen ausfüllen"
-                flagColor="#FFCC01"
-                progress={0.3}
-                description="Dr. Daniel Janke | 286"
-              />
-              <Appointment
-                lastEntry={true}
-                flagColor="#FFCC01"
-                progress={0.5}
-                title="Sachen packen"
-                description="Checklisten"
-                onPress={() => {
-                  this._onTouchCard('example.ChecklistDetailView');
-                }}
-              />
-
-              <Text style={styles.sectionHeadline}>Dev Menü</Text>
-              <Appointment
-                firstEntry={true}
-                title="ChecklistDetailView"
-                flagColor="#55EBD9"
-                description="Checklisten"
-                onPress={() => {
-                  this._onTouchCard('example.ChecklistDetailView');
-                }}
-              />
-
-              <Appointment
-                lastEntry={true}
-                title="ChatBotView"
-                flagColor="#55EBD9"
-                description="Chatbot"
-                onPress={() => {
-                  this._onTouchCard('example.ChatbotView');
-                }}
-              />
-              <Appointment
-                lastEntry={true}
-                title="FormDetailView"
-                flagColor="#55EBD9"
-                description="Chatbot"
-                onPress={() => {
-                  this._onTouchCard('example.FormDetailView');
-                }}
-              />
-
-              <Text style={styles.sectionHeadline}>
-                Vorstationäre Untersuchung
-              </Text>
-              <Appointment
-                title="Fahren Sie zu uns"
-                date="12.03"
-                flagColor="#FFCC01"
-                time="12:00"
-                description="Wegbeschreibung"
-                firstEntry={true}
-              />
-
-              <Appointment
-                title="Wartezeit"
-                date="12.03"
-                flagColor="#B2EB55"
-                time="36 min"
-                description="Sie werden aufgerufen"
-              />
-              <Appointment
-                title="Voruntersuchung"
-                date="12.03"
-                flagColor="#55EBD9"
-                time="12:00"
-                lastEntry={true}
-                description="Dr. Daniel Janke | 286"
-              />
-              <Text style={styles.sectionHeadline}>Vor der Operation</Text>
-              <Appointment
-                flagColor="#D40F14"
-                title="ASS Medikamente absetzen"
-                date="14.03"
-                description="Medikamente mit ASS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
-                firstEntry={true}
-              />
-              <Appointment
-                flagColor="#D40F14"
-                title="BSS Medikamente absetzen"
-                date="15.03"
-                description="Medikamente mit BSS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
-              />
-              <Appointment
-                flagColor="#B2EB55"
-                title="Sachen packen"
-                description="Checklisten für Aufenth."
-                progress={0.0}
-                lastEntry={true}
-              />
-
-              <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
-              <Appointment
-                onPress={this._onTouchCard}
-                flagColor="#018C8E"
-                title="Operation"
-                description="Dr. Anna Borchert"
-                date="13.03"
-                time="12:00"
-                firstEntry={true}
-                lastEntry={true}
-              />
-              <Text style={styles.sectionHeadline}>Nach Ihrem Aufenthalt</Text>
-              <Appointment
-                flagColor="#B2EB55"
-                title="Noch zu erledigen"
-                description="Checklisten nach Aufenth."
-                progress={0.0}
-                firstEntry={true}
-              />
-              <Appointment
-                flagColor="#B2EB55"
-                title="Hausarztbesuch"
-                description="Rezepte abholen"
-              />
-              <Appointment
-                flagColor="#B2EB55"
-                title="Apothekenbesuch"
-                description="Rezepte einlösen"
-              />
-              <Appointment
-                flagColor="#B2EB55"
-                title="Monoposol einnehmen"
-                description="1 Tablette"
-                date="17.03"
-                time="12:00"
-              />
-              <Appointment
-                flagColor="#B2EB55"
-                title="Monoposol einnehmen"
-                description="1 Tablette"
-                date="18.03"
-                time="12:00"
-                lastEntry={true}
-              />
-            </View>
-
-            <View style={styles.segmentViewx}>
-              <Text style={styles.sectionHeadline}>Vorbereitung</Text>
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-              <TodoCard title="Später Menü" description="Platzhalter" />
-            </View>
+              ],
+              {
+                useNativeDriver: true
+              }
+            )}
+          >
+            <Text style={styles.sectionHeadline}>Checklisten</Text>
+            <MenuCell title="Vorbereitung" />
+            <MenuCell title="Aufenthalt" />
+            <MenuCell title="Entlassung" />
+            <Text style={styles.sectionHeadline}>Fragebögen</Text>
+            <MenuCell title="Anamese" />
+            <MenuCell title="Aufenthalt" />
+            <MenuCell title="App" />
+            <Text style={styles.sectionHeadline}>Anderes</Text>
+            <MenuCell title="Wegbeschreibungen" />
+            <MenuCell title="Medikationsplan" />
           </Animated.ScrollView>
         </Animated.ScrollView>
       </React.Fragment>
@@ -534,7 +535,8 @@ export default class Timeline extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    width: Dimensions.get('window').width * 3,
     backgroundColor: '#F0F3F6'
   },
   welcome: {
@@ -544,8 +546,7 @@ const styles = StyleSheet.create({
   },
   chatBotBackground: {
     position: 'absolute',
-    zIndex: -10,
-    marginTop: -167
+    zIndex: -10
   },
   instructions: {
     textAlign: 'center',
@@ -554,6 +555,13 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     height: 20
+  },
+  headerContainer: {
+    zIndex: 1,
+    // display: 'none',
+    position: 'absolute',
+    marginTop: 20,
+    top: 0
   },
   headerImage: {
     width: 414,
@@ -608,6 +616,7 @@ const styles = StyleSheet.create({
   chatBotView: {
     marginTop: 64,
     paddingHorizontal: 32,
+    flex: 1,
     justifyContent: 'center'
   },
   chatBotText: {
@@ -624,7 +633,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "red"
   },
   segmentViewx: {
-    flex: 1
+    flex: 1,
+    alignSelf: 'stretch'
   },
   indicator: {
     width: 100,
