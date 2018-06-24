@@ -17,7 +17,8 @@ import {
   View,
   Dimensions,
   Animated,
-  Easing
+  Easing,
+  PushNotificationIOS
 } from 'react-native';
 import { ProgressCircle } from 'react-native-svg-charts';
 import AnimatedPath from 'react-native-svg-charts/src/animated-path';
@@ -25,6 +26,7 @@ import AnimatedPath from 'react-native-svg-charts/src/animated-path';
 import Appointment from '../components/AppointmentCard';
 import MenuCell from '../components/MenuCell';
 import TodoCard from '../components/TodoCard';
+import ChatbotButton from '../components/ChatbotButton';
 
 import extStyles from '../assets/styles';
 
@@ -304,9 +306,31 @@ export default class Timeline extends Component<Props> {
                 wenn du eine Frage hast, stell sie.
               </Text>
               <TextInput ref="_textInput" placeholder="Gib deine Frage ein" />
-              <TouchableOpacity style={extStyles.text.chatbotButton}>
-                <Text style={extStyles.text.chatbotButtonText}>Verstanden</Text>
-              </TouchableOpacity>
+              <ChatbotButton
+                text="Permission Abfrage"
+                onPress={() => {
+                  PushNotificationIOS.requestPermissions();
+                }}
+              />
+              <ChatbotButton
+                text="Push in 3 Sekunden"
+                onPress={() => {
+                  var t = new Date();
+                  t.setSeconds(t.getSeconds() + 3);
+
+                  PushNotificationIOS.scheduleLocalNotification({
+                    alertBody:
+                      'Hallo Mallo Kallo Jallo Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente xyz wohoooooo wohoooooo wohoooooo wohoooooo.',
+                    fireDate: t
+                  });
+                }}
+              />
+              <ChatbotButton
+                text="Schedule löschen"
+                onPress={() => {
+                  PushNotificationIOS.cancelAllLocalNotifications();
+                }}
+              />
             </View>
             <Animated.Image
               style={[styles.chatBotBackground]}

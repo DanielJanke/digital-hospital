@@ -2,6 +2,8 @@ import {
   Navigation
 } from "react-native-navigation";
 
+import LoginView from "../components/LoginView";
+
 import MyArea from "../components/Timeline";
 import AppointmentDetail from "../components/AppointmentDetail";
 import DoctorDetailView from "../components/DoctorDetailView";
@@ -14,6 +16,8 @@ import FormDetailView from "../components/FormDetailView";
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
+  Navigation.registerComponent("LoginScreen", () => LoginView);
+
   Navigation.registerComponent("example.MyArea", () => MyArea);
   Navigation.registerComponent("example.AppointmentDetail", () => AppointmentDetail);
   Navigation.registerComponent("example.DoctorDetailView", () => DoctorDetailView);
@@ -23,4 +27,5 @@ export function registerScreens() {
   Navigation.registerComponent("example.ChatbotView", () => ChatbotView);
   Navigation.registerComponent("example.MapView", () => MapView);
   Navigation.registerComponent("example.FormDetailView", () => FormDetailView);
+
 }

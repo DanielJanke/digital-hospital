@@ -15,6 +15,13 @@ import {
 
 registerScreens(); // this is where you register all of your app's screens
 
+// Navigation.startSingleScreenApp({
+//   screen: {
+//     screen: 'LoginScreen', // unique ID registered with Navigation.registerScreen
+//   }
+// })
+
+
 Navigation.startTabBasedApp({
   tabs: [{
       label: "Übersicht",
