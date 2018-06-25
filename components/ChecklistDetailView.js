@@ -7,14 +7,20 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import TodoCard from '../components/TodoCard';
-
 import checklistdata from '../assets/checklists';
+import { check, uncheck } from '../redux/Checklists';
 
 type Props = {};
 
-export default class ChecklistDetailView extends Component<Props> {
+export class ChecklistDetailView extends Component<Props> {
+  constructor(props) {
+    super(props);
+    // console.log(this.props.state.checklistReducer.Vorbereitung);
+  }
+
   static navigatorStyle = {
     // navBarHidden: true,
     navBarTranslucent: true,
@@ -41,11 +47,15 @@ export default class ChecklistDetailView extends Component<Props> {
           </Text>
         </View>
 
-        {checklistdata.Vorbereitung.map((todoitem, i) => {
+        {this.props.state.checklistReducer.Vorbereitung.map((todoItem, i) => {
           return (
             <TodoCard
-              title={todoitem.title}
-              description={todoitem.description}
+              onPress={() => {
+                this.props.check(i);
+              }}
+              checked={todoItem.checked}
+              title={todoItem.title}
+              description={todoItem.description}
               key={i}
             />
           );
@@ -54,6 +64,14 @@ export default class ChecklistDetailView extends Component<Props> {
     );
   }
 }
+
+export default connect(
+  state => ({ state }),
+  {
+    check,
+    uncheck
+  }
+)(ChecklistDetailView);
 
 const styles = StyleSheet.create({
   container: {

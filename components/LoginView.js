@@ -13,13 +13,17 @@ import {
 
 import TouchID from 'react-native-touch-id';
 import { connect } from 'react-redux';
-import { signIn } from '../redux';
+import { signIn } from '../redux/Auth';
 import ChatbotButton from '../components/ChatbotButton';
 import extStyles from '../assets/styles';
 
 type Props = {};
 
 class LoginView extends Component<Props> {
+  constructor(props) {
+    super(props);
+  }
+
   static navigatorStyle = {
     navBarHidden: true,
     statusBarTextColorScheme: 'light'

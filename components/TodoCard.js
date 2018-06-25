@@ -11,33 +11,32 @@ import {
 import extStyles from '../assets/styles';
 
 type Props = {
-  onPress: () => void
+  onPress: () => void,
+  checked: boolen
 };
 
 export default class TodoCard extends Component<Props> {
   constructor(props) {
     super(props);
-    this.state = {
-      active: false
-    };
-
-    // let activeImage = require('../assets/todo-circle-filled.png');
-    // let inactiveImage = require('../assets/todo-circle-empty.png');
   }
+
   render() {
-    const { date, flagColor, title, description, time, onPress } = this.props;
-    const { active } = this.state;
+    const {
+      date,
+      flagColor,
+      title,
+      description,
+      time,
+      onPress,
+      checked
+    } = this.props;
+
     let source = '';
-    active
+    checked
       ? (source = require('../assets/todo-circle-filled.png'))
       : (source = require('../assets/todo-circle-empty.png'));
     return (
-      <TouchableOpacity
-        onPress={() => {
-          this.setState({ active: !this.state.active });
-        }}
-        style={styles.container}
-      >
+      <TouchableOpacity onPress={onPress} style={styles.container}>
         <Image style={styles.checkbox} source={source} />
         <View style={styles.divider} />
         <View style={styles.contentContainer}>

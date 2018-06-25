@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import { ProgressCircle } from 'react-native-svg-charts';
 import AnimatedPath from 'react-native-svg-charts/src/animated-path';
+import { connect } from 'react-redux';
 
 import { NAV_SCREENS } from '../screens';
 
@@ -40,7 +41,7 @@ const instructions = Platform.select({
 });
 
 type Props = { navigator: any };
-export default class Timeline extends Component<Props> {
+export class Timeline extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true,
     statusBarTextColorScheme: 'light'
@@ -60,7 +61,6 @@ export default class Timeline extends Component<Props> {
       x: 1 * Dimensions.get('window').width,
       animated: true
     });
-    console.log('nav: ', NAV_SCREENS);
   }
 
   _onTouchCard = screen => {
@@ -79,7 +79,18 @@ export default class Timeline extends Component<Props> {
     });
   };
 
+  _computeChecklistProgress = () => {
+    let amountOfAllItems = this.props.state.checklistReducer.Vorbereitung
+      .length;
+    let amountOfTrueItems = this.props.state.checklistReducer.Vorbereitung.filter(
+      todoItem => todoItem.checked
+    ).length;
+    let progress = amountOfTrueItems / amountOfAllItems;
+    return progress;
+  };
+
   render() {
+    let progress = this._computeChecklistProgress();
     let verticalScrollingEnabled = this.state.scrollX > 0 ? true : false;
     return (
       <React.Fragment>
@@ -403,6 +414,7 @@ export default class Timeline extends Component<Props> {
               title="ChecklistDetailView"
               flagColor="#55EBD9"
               description="Checklisten"
+              progress={progress}
               onPress={() => {
                 this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
               }}
@@ -558,6 +570,11 @@ export default class Timeline extends Component<Props> {
     );
   }
 }
+
+export default connect(
+  state => ({ state }),
+  {}
+)(Timeline);
 
 const styles = StyleSheet.create({
   container: {
