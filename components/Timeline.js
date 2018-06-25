@@ -23,6 +23,8 @@ import {
 import { ProgressCircle } from 'react-native-svg-charts';
 import AnimatedPath from 'react-native-svg-charts/src/animated-path';
 
+import { NAV_SCREENS } from '../screens';
+
 import Appointment from '../components/AppointmentCard';
 import MenuCell from '../components/MenuCell';
 import TodoCard from '../components/TodoCard';
@@ -58,6 +60,7 @@ export default class Timeline extends Component<Props> {
       x: 1 * Dimensions.get('window').width,
       animated: true
     });
+    console.log('nav: ', NAV_SCREENS);
   }
 
   _onTouchCard = screen => {
@@ -367,7 +370,7 @@ export default class Timeline extends Component<Props> {
               progress={1}
               description="Rufen Sie uns an"
               onPress={() => {
-                this._onTouchCard('example.ChecklistDetailView');
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
               }}
             />
             <Appointment
@@ -390,7 +393,7 @@ export default class Timeline extends Component<Props> {
               title="Sachen packen"
               description="Checklisten"
               onPress={() => {
-                this._onTouchCard('example.ChecklistDetailView');
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
               }}
             />
 
@@ -401,7 +404,7 @@ export default class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Checklisten"
               onPress={() => {
-                this._onTouchCard('example.ChecklistDetailView');
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
               }}
             />
 
@@ -411,7 +414,7 @@ export default class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Chatbot"
               onPress={() => {
-                this._onTouchCard('example.ChatbotView');
+                this._onTouchCard(NAV_SCREENS.CHATBOT_VIEW);
               }}
             />
             <Appointment
@@ -420,7 +423,7 @@ export default class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Chatbot"
               onPress={() => {
-                this._onTouchCard('example.FormDetailView');
+                this._onTouchCard(NAV_SCREENS.FORM_DETAIL_VIEW);
               }}
             />
 
@@ -475,7 +478,6 @@ export default class Timeline extends Component<Props> {
 
             <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
             <Appointment
-              onPress={this._onTouchCard}
               flagColor="#018C8E"
               title="Operation"
               description="Dr. Anna Borchert"

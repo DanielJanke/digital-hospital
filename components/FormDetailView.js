@@ -84,9 +84,10 @@ export default class FormDetailView extends Component<Props> {
             pagingEnabled={true}
             style={styles.qrCodeWrapper}
           >
-            {content.map(splittedContent => {
+            {content.map((splittedContent, i) => {
               return (
                 <QRCode
+                  key={i}
                   value={JSON.stringify(splittedContent)}
                   size={Dimensions.get('window').width - 32}
                   bgColor="Black"

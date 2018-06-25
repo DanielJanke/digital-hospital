@@ -12,14 +12,14 @@ import {
 } from 'react-native';
 
 import TouchID from 'react-native-touch-id';
-
+import { connect } from 'react-redux';
+import { signIn } from '../redux';
 import ChatbotButton from '../components/ChatbotButton';
-
 import extStyles from '../assets/styles';
 
 type Props = {};
 
-export default class LoginView extends Component<Props> {
+class LoginView extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true,
     statusBarTextColorScheme: 'light'
@@ -29,17 +29,18 @@ export default class LoginView extends Component<Props> {
     this._handleLogin();
   }
 
-  _handleLogin = () => {
-    TouchID.authenticate('Zum einloggen Finger auflegen.')
-      .then(success => {
-        AlertIOS.alert('Authenticated Successfully');
-      })
-      .catch(error => {
-        AlertIOS.alert('Authentication Failed');
-      });
+  _handleLogin = touchIdOnError => {
+    this.props.signIn(touchIdOnError);
+  };
+
+  _touchIdOnError = () => {
+    this.ref._textInput.focus();
   };
 
   render() {
+    if (this.props.state.error) {
+      this.refs._textInput.focus();
+    }
     return (
       <View style={styles.container}>
         <ImageBackground
@@ -50,7 +51,7 @@ export default class LoginView extends Component<Props> {
             style={styles.logo}
             source={require('../assets/ukb_logo_white.png')}
           />
-          <Text style={styles.loginText}>Hallo,{'\n'}Herr Mustermann</Text>
+          <Text style={styles.loginText}>Herzlich Willkommen,{'\n'}Max</Text>
           <TextInput
             style={styles.passwordInput}
             ref="_textInput"
@@ -60,12 +61,22 @@ export default class LoginView extends Component<Props> {
             onPress={this._handleLogin}
             style={styles.loginButton}
             text="Einloggen mit TouchID"
+            text={
+              this.props.state.error ? 'Einloggen' : 'Einloggen mit TouchID'
+            }
           />
         </ImageBackground>
       </View>
     );
   }
 }
+
+export default connect(
+  state => ({ state }),
+  {
+    signIn
+  }
+)(LoginView);
 
 const styles = StyleSheet.create({
   container: {
@@ -96,7 +107,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderBottomWidth: 2,
     borderBottomColor: '#ffffff',
-    marginBottom: 48,
+    marginBottom: 32,
     paddingBottom: 4
   }
 });
