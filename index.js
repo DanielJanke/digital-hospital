@@ -1,6 +1,5 @@
 import { AppRegistry } from "react-native";
 import { Navigation } from "react-native-navigation";
-import App from "./App";
 AppRegistry.registerComponent("digitalhospital", () => App);
 import { registerScreens, NAV_SCREENS } from "./screens";
 

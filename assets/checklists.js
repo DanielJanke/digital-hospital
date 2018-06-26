@@ -1,5 +1,9 @@
+export const VORBEREITUNG = "Vorbereitung";
+export const AUFENTHALT = "Aufenthalt";
+
 const checklistdata = {
-  Vorbereitung: [{
+  [VORBEREITUNG]: [
+    {
       title: "Persönliche Dokumente",
       description: "Versicherungskarte, Personalausweis",
       checked: false
@@ -43,8 +47,15 @@ const checklistdata = {
       title: "Kontakdaten Angehöriger",
       description: "Name und Telefonnummer",
       checked: false
-    },
+    }
+  ],
+  [AUFENTHALT]: [
+    {
+      title: "Informieren Sie Freunde & Verwandte",
+      description: "Versicherungskarte, Personalausweis",
+      checked: false
+    }
   ]
-}
+};
 
-export default checklistdata
+export default checklistdata;

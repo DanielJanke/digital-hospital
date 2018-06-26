@@ -34,6 +34,8 @@ import ChatbotButton from "../components/ChatbotButton";
 
 import extStyles from "../assets/styles";
 
+import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
+
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
   android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
@@ -62,12 +64,13 @@ export class Timeline extends Component<Props> {
     });
   }
 
-  _onTouchCard = screen => {
+  _onTouchCard = (screen, props) => {
     this.props.navigator.push({
       // title: Strings.camera.title,
       // screen: 'example.AppointmentDetail'
       title: "Checkliste Vorbereitung",
-      screen: screen
+      screen: screen,
+      passProps: props
     });
   };
   _onPressSegment = pageIndex => {
@@ -78,15 +81,14 @@ export class Timeline extends Component<Props> {
     });
   };
 
-  _computeChecklistProgress = () => {
-    let amountOfAllItems = this.props.state.checklistReducer.Vorbereitung.length;
-    let amountOfTrueItems = this.props.state.checklistReducer.Vorbereitung.filter(todoItem => todoItem.checked).length;
+  _computeChecklistProgress = checklist => {
+    let amountOfAllItems = this.props.state.checklistReducer[checklist].length;
+    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(todoItem => todoItem.checked).length;
     let progress = amountOfTrueItems / amountOfAllItems;
     return progress;
   };
 
   render() {
-    let progress = this._computeChecklistProgress();
     let verticalScrollingEnabled = this.state.scrollX > 0 ? true : false;
     return (
       <React.Fragment>
@@ -362,31 +364,23 @@ export class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               progress={1}
               description="Rufen Sie uns an"
-              onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
-              }}
             />
             <Appointment
               title="Voruntersuchung"
               date="BALD"
               flagColor="#B2EB55"
               time="12:00"
-              description="Dr. Daniel Janke | 286"
+              description="Dr. Daniel Janke"
             />
-            <Appointment
-              title="Fragebögen ausfüllen"
-              flagColor="#FFCC01"
-              progress={0.3}
-              description="Dr. Daniel Janke | 286"
-            />
+            <Appointment title="Fragebögen ausfüllen" flagColor="#FFCC01" progress={0.3} description="Anamnese" />
             <Appointment
               lastEntry={true}
               flagColor="#FFCC01"
-              progress={0.5}
+              progress={this._computeChecklistProgress(VORBEREITUNG)}
               title="Sachen packen"
               description="Checklisten"
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: VORBEREITUNG });
               }}
             />
 
@@ -396,9 +390,9 @@ export class Timeline extends Component<Props> {
               title="ChecklistDetailView"
               flagColor="#55EBD9"
               description="Checklisten"
-              progress={progress}
+              progress={this._computeChecklistProgress(AUFENTHALT)}
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW);
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: AUFENTHALT });
               }}
             />
 
@@ -464,8 +458,11 @@ export class Timeline extends Component<Props> {
               flagColor="#B2EB55"
               title="Sachen packen"
               description="Checklisten für Aufenth."
-              progress={0.0}
               lastEntry={true}
+              progress={this._computeChecklistProgress(AUFENTHALT)}
+              onPress={() => {
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: AUFENTHALT });
+              }}
             />
 
             <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
