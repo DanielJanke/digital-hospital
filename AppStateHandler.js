@@ -13,7 +13,6 @@ export default class AppStateHandler {
     //   this.startApp(this.appState);
     // });
 
-    console.log(this.props)
     this.currentValue = this.appState;
     this.startApp(this.appState);
     this.props.store.subscribe(this._onStoreUpdate);
@@ -33,15 +32,10 @@ export default class AppStateHandler {
 
     // const storeState = this.props.store.getState();
 
-    console.log('on store update: ', this.props.store.getState())
 
     const storeState = this.props.store.getState().authReducer.loggedIn;
 
     if (storeState !== this.appState) {
-      console.log('start app');
-      console.log(storeState);
-      console.log(this.appState);
-
       this.startApp(this.props.store.getState().authReducer.loggedIn);
     }
 

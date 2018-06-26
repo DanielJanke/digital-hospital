@@ -101,8 +101,9 @@ export class Timeline extends Component<Props> {
               transform: [
                 {
                   translateY: this.state.scrollY.interpolate({
-                    inputRange: [-168, -167, -166],
-                    outputRange: [0, 0, -1]
+                    // 85 stop upscrolling
+                    inputRange: [-168, -167, -40, -39],
+                    outputRange: [0, 0, -80, -80]
                   })
                 }
               ]
@@ -149,8 +150,20 @@ export class Timeline extends Component<Props> {
               }
             ]}
           >
-            <Text style={styles.headline}>Max Mustermann</Text>
-            <Text style={styles.subheadline}>Zimmer 2.023</Text>
+            <Animated.View
+              style={[
+                styles.headerContent,
+                {
+                  opacity: this.state.scrollY.interpolate({
+                    inputRange: [-168, -167, -166, -85, -84],
+                    outputRange: [1, 1, 1, 0, 0]
+                  })
+                }
+              ]}
+            >
+              <Text style={styles.headline}>Max Mustermann</Text>
+              <Text style={styles.subheadline}>Zimmer 2.023</Text>
+            </Animated.View>
           </Animated.View>
 
           <View style={styles.segmentContainer}>
@@ -352,7 +365,10 @@ export class Timeline extends Component<Props> {
                 }
               ],
               {
-                useNativeDriver: true
+                useNativeDriver: true,
+                listener: event => {
+                  console.log(event.nativeEvent.contentOffset.y);
+                }
               }
             )}
           >
@@ -577,7 +593,8 @@ const styles = StyleSheet.create({
     // display: 'none',
     position: "absolute",
     marginTop: 20,
-    top: 0
+    top: 0,
+    paddingLeft: 32
   },
   headerImage: {
     width: Dimensions.get("window").width,
@@ -593,12 +610,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 28,
     fontWeight: "800",
-    marginLeft: 32,
-    marginTop: 16,
+    marginTop: 24,
     marginBottom: 4
   },
   subheadline: {
-    marginLeft: 32,
     color: "white",
     fontSize: 17,
     marginBottom: 32
@@ -613,7 +628,6 @@ const styles = StyleSheet.create({
   },
   segmentContainer: {
     flexDirection: "row",
-    marginLeft: 32,
     marginBottom: 32,
     zIndex: 2
     // left: '-100%'
