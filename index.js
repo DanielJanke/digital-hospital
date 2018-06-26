@@ -63,7 +63,7 @@ const dashboard = () => {
 
 const stateHandler = new AppStateHandler({
   store,
-  // onSignedOut: loginScreen,
-  onSignedOut: dashboard,
+  onSignedOut: loginScreen,
+  // onSignedOut: dashboard,
   onSingedIn: dashboard
 });

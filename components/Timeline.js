@@ -594,13 +594,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "800",
     marginLeft: 32,
-    marginTop: 16
+    marginTop: 16,
+    marginBottom: 4
   },
   subheadline: {
     marginLeft: 32,
     color: "white",
     fontSize: 17,
-    marginBottom: 28
+    marginBottom: 32
   },
   sectionHeadline: {
     fontSize: 17,
