@@ -4,7 +4,7 @@
  * @flow
  */
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -20,46 +20,48 @@ import {
   Easing,
   PushNotificationIOS,
   SafeAreaView
-} from "react-native";
-import { ProgressCircle } from "react-native-svg-charts";
-import AnimatedPath from "react-native-svg-charts/src/animated-path";
-import { connect } from "react-redux";
+} from 'react-native';
+import { ProgressCircle } from 'react-native-svg-charts';
+import AnimatedPath from 'react-native-svg-charts/src/animated-path';
+import { connect } from 'react-redux';
 
-import { NAV_SCREENS } from "../screens";
+import { NAV_SCREENS } from '../screens';
 
-import Appointment from "../components/AppointmentCard";
-import MenuCell from "../components/MenuCell";
-import TodoCard from "../components/TodoCard";
-import ChatbotButton from "../components/ChatbotButton";
+import Appointment from '../components/AppointmentCard';
+import MenuCell from '../components/MenuCell';
+import TodoCard from '../components/TodoCard';
+import ChatbotButton from '../components/ChatbotButton';
 
-import extStyles from "../assets/styles";
+import extStyles from '../assets/styles';
 
-import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
+import { VORBEREITUNG, AUFENTHALT } from '../assets/checklists';
 
 const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu'
 });
 
 type Props = { navigator: any };
 export class Timeline extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true,
-    statusBarTextColorScheme: "light"
+    statusBarTextColorScheme: 'light'
   };
 
   constructor(props) {
     super(props);
     this.state = {
       scrollX: new Animated.Value(0),
-      scrollY: new Animated.Value(-167),
-      verticalScrollingEnabled: true
+      scrollY: new Animated.Value(0),
+      scrollYTimelineBeforeSwipeToLeft: -167
     };
   }
 
   componentDidMount() {
     this._segmentScrollView.getNode().scrollTo({
-      x: 1 * Dimensions.get("window").width,
+      x: 1 * Dimensions.get('window').width,
       animated: true
     });
   }
@@ -68,14 +70,14 @@ export class Timeline extends Component<Props> {
     this.props.navigator.push({
       // title: Strings.camera.title,
       // screen: 'example.AppointmentDetail'
-      title: "Checkliste Vorbereitung",
+      title: 'Checkliste Vorbereitung',
       screen: screen,
       passProps: props
     });
   };
   _onPressSegment = pageIndex => {
     this._segmentScrollView.getNode().scrollTo({
-      x: pageIndex * Dimensions.get("window").width,
+      x: pageIndex * Dimensions.get('window').width,
       y: 0,
       animated: true
     });
@@ -83,16 +85,20 @@ export class Timeline extends Component<Props> {
 
   _computeChecklistProgress = checklist => {
     let amountOfAllItems = this.props.state.checklistReducer[checklist].length;
-    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(todoItem => todoItem.checked).length;
+    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(
+      todoItem => todoItem.checked
+    ).length;
     let progress = amountOfTrueItems / amountOfAllItems;
     return progress;
   };
 
   render() {
-    let verticalScrollingEnabled = this.state.scrollX > 0 ? true : false;
     return (
       <React.Fragment>
-        <Animated.Image style={[styles.statusBar]} source={require("../assets/header/headerstatusbar.png")} />
+        <Animated.Image
+          style={[styles.statusBar]}
+          source={require('../assets/header/headerstatusbar.png')}
+        />
         <Animated.View
           shouldRasterizeIOS={true}
           style={[
@@ -101,7 +107,6 @@ export class Timeline extends Component<Props> {
               transform: [
                 {
                   translateY: this.state.scrollY.interpolate({
-                    // 85 stop upscrolling
                     inputRange: [-168, -167, -40, -39],
                     outputRange: [0, 0, -80, -80]
                   })
@@ -137,7 +142,7 @@ export class Timeline extends Component<Props> {
                 // ]
               }
             ]}
-            source={require("../assets/header/headernew.png")}
+            source={require('../assets/header/headernew.png')}
           />
           <Animated.View
             style={[
@@ -173,7 +178,10 @@ export class Timeline extends Component<Props> {
                 this._onPressSegment(0);
               }}
             >
-              <Animated.Image style={styles.assistentSegment} source={require("../assets/ukb_logo.png")} />
+              <Animated.Image
+                style={styles.assistentSegment}
+                source={require('../assets/ukb_logo.png')}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
@@ -186,13 +194,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)", "rgba(255, 255, 255, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get('window').width,
+                        Dimensions.get('window').width * 2
+                      ],
+                      outputRange: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(97, 97, 97, 1)',
+                        'rgba(255, 255, 255, 1)'
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get('window').width,
+                        Dimensions.get('window').width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -212,13 +232,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get('window').width,
+                        Dimensions.get('window').width * 2
+                      ],
+                      outputRange: [
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(255, 255, 255, 1)',
+                        'rgba(97, 97, 97, 1)'
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get('window').width,
+                        Dimensions.get('window').width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -235,13 +267,21 @@ export class Timeline extends Component<Props> {
                   transform: [
                     {
                       translateX: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get('window').width,
+                          Dimensions.get('window').width * 2
+                        ],
                         outputRange: [7, 78, 175]
                       })
                     },
                     {
                       translateY: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get('window').width,
+                          Dimensions.get('window').width * 2
+                        ],
                         outputRange: [-17, 0, 0]
                       })
                     }
@@ -249,13 +289,21 @@ export class Timeline extends Component<Props> {
                 },
                 {
                   width: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get('window').width,
+                      Dimensions.get('window').width * 2
+                    ],
                     outputRange: [60, 90, 130]
                   })
                 },
                 {
                   height: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get('window').width,
+                      Dimensions.get('window').width * 2
+                    ],
                     outputRange: [60, 28, 28]
                   })
                 }
@@ -269,7 +317,6 @@ export class Timeline extends Component<Props> {
         <Animated.ScrollView
           contentContainerStyle={styles.container}
           ref={c => (this._segmentScrollView = c)}
-          scrollEnabled={this.state.verticalScrollingEnabled}
           horizontal={true}
           pagingEnabled={true}
           bounces={false}
@@ -289,8 +336,30 @@ export class Timeline extends Component<Props> {
               listener: event => {
                 if (event.nativeEvent.contentOffset.x === 0) {
                   this.refs._textInput.focus();
+                  this.setState({
+                    scrollYTimelineBeforeSwipeToLeft: this.state.scrollY._value
+                  });
+                  this._timelineVerticalcrollView.getNode().scrollTo({
+                    y: -167,
+                    animated: true
+                  });
                 } else {
                   this.refs._textInput.blur();
+                }
+                if (event.nativeEvent.contentOffset.x === 414) {
+                  this._timelineVerticalcrollView.getNode().scrollTo({
+                    y: this.state.scrollYTimelineBeforeSwipeToLeft,
+                    animated: true
+                  });
+                }
+                if (event.nativeEvent.contentOffset.x === 828) {
+                  this.setState({
+                    scrollYTimelineBeforeSwipeToLeft: this.state.scrollY._value
+                  });
+                  // this._timelineVerticalcrollView.getNode().scrollTo({
+                  //   y: this.state.scrollYTimelineBeforeSwipeToLeft,
+                  //   animated: true
+                  // });
                 }
               }
             }
@@ -305,9 +374,9 @@ export class Timeline extends Component<Props> {
                 opacity: this.state.scrollX.interpolate({
                   inputRange: [
                     0,
-                    Dimensions.get("window").width / 2,
-                    Dimensions.get("window").width,
-                    Dimensions.get("window").width * 2
+                    Dimensions.get('window').width / 2,
+                    Dimensions.get('window').width,
+                    Dimensions.get('window').width * 2
                   ],
                   outputRange: [1, 0, 0, 0]
                 })
@@ -316,37 +385,21 @@ export class Timeline extends Component<Props> {
           >
             <View style={styles.chatBotView}>
               <Text style={[extStyles.text.chatbotText, styles.chatBotText]}>
-                Hallo Max,{"\n"}
+                Hallo Max,{'\n'}
                 wenn du eine Frage hast, stell sie.
               </Text>
               <TextInput ref="_textInput" placeholder="Gib deine Frage ein" />
               <ChatbotButton
-                text="Permission Abfrage"
+                text="Action"
                 onPress={() => {
                   PushNotificationIOS.requestPermissions();
                 }}
               />
-              <ChatbotButton
-                text="Push in 3 Sekunden"
-                onPress={() => {
-                  var t = new Date();
-                  t.setSeconds(t.getSeconds() + 3);
-
-                  PushNotificationIOS.scheduleLocalNotification({
-                    alertBody:
-                      "Hallo Mallo Kallo Jallo Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente xyz wohoooooo wohoooooo wohoooooo wohoooooo.",
-                    fireDate: t
-                  });
-                }}
-              />
-              <ChatbotButton
-                text="Schedule löschen"
-                onPress={() => {
-                  PushNotificationIOS.cancelAllLocalNotifications();
-                }}
-              />
             </View>
-            <Animated.Image style={[styles.chatBotBackground]} source={require("../assets/chatbackground.png")} />
+            <Animated.Image
+              style={[styles.chatBotBackground]}
+              source={require('../assets/chatbackground.png')}
+            />
           </Animated.View>
 
           <Animated.ScrollView
@@ -354,6 +407,7 @@ export class Timeline extends Component<Props> {
             contentInset={{ top: 167, left: 0, bottom: 0, right: 0 }}
             contentOffset={{ x: 0, y: -167 }}
             scrollEventThrottle={16}
+            ref={c => (this._timelineVerticalcrollView = c)}
             onScroll={Animated.event(
               [
                 {
@@ -365,10 +419,7 @@ export class Timeline extends Component<Props> {
                 }
               ],
               {
-                useNativeDriver: true,
-                listener: event => {
-                  console.log(event.nativeEvent.contentOffset.y);
-                }
+                useNativeDriver: false
               }
             )}
           >
@@ -388,7 +439,12 @@ export class Timeline extends Component<Props> {
               time="12:00"
               description="Dr. Daniel Janke"
             />
-            <Appointment title="Fragebögen ausfüllen" flagColor="#FFCC01" progress={0.3} description="Anamnese" />
+            <Appointment
+              title="Fragebögen ausfüllen"
+              flagColor="#FFCC01"
+              progress={0.3}
+              description="Anamnese"
+            />
             <Appointment
               lastEntry={true}
               flagColor="#FFCC01"
@@ -396,7 +452,9 @@ export class Timeline extends Component<Props> {
               title="Sachen packen"
               description="Checklisten"
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: VORBEREITUNG });
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
+                  checklist: VORBEREITUNG
+                });
               }}
             />
 
@@ -408,7 +466,9 @@ export class Timeline extends Component<Props> {
               description="Checklisten"
               progress={this._computeChecklistProgress(AUFENTHALT)}
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: AUFENTHALT });
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
+                  checklist: AUFENTHALT
+                });
               }}
             />
 
@@ -430,8 +490,35 @@ export class Timeline extends Component<Props> {
                 this._onTouchCard(NAV_SCREENS.FORM_DETAIL_VIEW);
               }}
             />
+            <ChatbotButton
+              text="Permission Abfrage"
+              onPress={() => {
+                PushNotificationIOS.requestPermissions();
+              }}
+            />
+            <ChatbotButton
+              text="Push in 3 Sekunden"
+              onPress={() => {
+                var t = new Date();
+                t.setSeconds(t.getSeconds() + 3);
 
-            <Text style={styles.sectionHeadline}>Vorstationäre Untersuchung</Text>
+                PushNotificationIOS.scheduleLocalNotification({
+                  alertBody:
+                    'Hallo Mallo Kallo Jallo Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente xyz wohoooooo wohoooooo wohoooooo wohoooooo.',
+                  fireDate: t
+                });
+              }}
+            />
+            <ChatbotButton
+              text="Schedule löschen"
+              onPress={() => {
+                PushNotificationIOS.cancelAllLocalNotifications();
+              }}
+            />
+
+            <Text style={styles.sectionHeadline}>
+              Vorstationäre Untersuchung
+            </Text>
             <Appointment
               title="Fahren Sie zu uns"
               date="12.03"
@@ -477,7 +564,9 @@ export class Timeline extends Component<Props> {
               lastEntry={true}
               progress={this._computeChecklistProgress(AUFENTHALT)}
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, { checklist: AUFENTHALT });
+                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
+                  checklist: AUFENTHALT
+                });
               }}
             />
 
@@ -499,8 +588,16 @@ export class Timeline extends Component<Props> {
               progress={0.0}
               firstEntry={true}
             />
-            <Appointment flagColor="#B2EB55" title="Hausarztbesuch" description="Rezepte abholen" />
-            <Appointment flagColor="#B2EB55" title="Apothekenbesuch" description="Rezepte einlösen" />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Hausarztbesuch"
+              description="Rezepte abholen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Apothekenbesuch"
+              description="Rezepte einlösen"
+            />
             <Appointment
               flagColor="#B2EB55"
               title="Monoposol einnehmen"
@@ -534,7 +631,7 @@ export class Timeline extends Component<Props> {
                 }
               ],
               {
-                useNativeDriver: true
+                useNativeDriver: false
               }
             )}
           >
@@ -567,22 +664,22 @@ const styles = StyleSheet.create({
   },
   container: {
     // flex: 1,
-    width: Dimensions.get("window").width * 3,
-    backgroundColor: "#F0F3F6"
+    width: Dimensions.get('window').width * 3,
+    backgroundColor: '#F0F3F6'
   },
   welcome: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 10
   },
   chatBotBackground: {
-    position: "absolute",
-    width: Dimensions.get("window").width,
+    position: 'absolute',
+    width: Dimensions.get('window').width,
     zIndex: -10
   },
   instructions: {
-    textAlign: "center",
-    color: "#333333",
+    textAlign: 'center',
+    color: '#333333',
     marginBottom: 5
   },
   statusBar: {
@@ -591,50 +688,50 @@ const styles = StyleSheet.create({
   headerContainer: {
     zIndex: 1,
     // display: 'none',
-    position: "absolute",
+    position: 'absolute',
     marginTop: 20,
     top: 0,
     paddingLeft: 32
   },
   headerImage: {
-    width: Dimensions.get("window").width,
+    width: Dimensions.get('window').width,
     height: 167,
     marginTop: 0,
-    position: "absolute",
+    position: 'absolute',
     zIndex: 1
   },
   headerContent: {
     zIndex: 2
   },
   headline: {
-    color: "white",
+    color: 'white',
     fontSize: 28,
-    fontWeight: "800",
+    fontWeight: '800',
     marginTop: 24,
     marginBottom: 4
   },
   subheadline: {
-    color: "white",
+    color: 'white',
     fontSize: 17,
     marginBottom: 32
   },
   sectionHeadline: {
     fontSize: 17,
-    fontWeight: "600",
+    fontWeight: '600',
     marginTop: 32,
     marginBottom: 16,
-    textAlign: "center",
-    color: "#4E4E4E"
+    textAlign: 'center',
+    color: '#4E4E4E'
   },
   segmentContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 32,
     zIndex: 2
     // left: '-100%'
   },
   segmentText: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: '700',
     // color: 'white',
     marginRight: 32
   },
@@ -648,35 +745,35 @@ const styles = StyleSheet.create({
     marginTop: 64,
     paddingHorizontal: 32,
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center'
   },
   chatBotText: {
     marginBottom: 16
   },
   segmentViewContainer: {
-    flexDirection: "row",
-    width: Dimensions.get("window").width * 3
+    flexDirection: 'row',
+    width: Dimensions.get('window').width * 3
   },
   segmentView: {
     // flex: 1,
-    alignSelf: "stretch"
+    alignSelf: 'stretch'
     // flexDirection: "column"
     // backgroundColor: "red"
   },
   segmentViewx: {
     flex: 1,
-    alignSelf: "stretch"
+    alignSelf: 'stretch'
   },
   indicator: {
     width: 100,
     height: 28,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 100,
-    shadowColor: "rgba(0,0,0,0.4)",
+    shadowColor: 'rgba(0,0,0,0.4)',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 11,
-    position: "absolute",
+    position: 'absolute',
     zIndex: -1,
     marginLeft: -16,
     // marginLeft: 102,

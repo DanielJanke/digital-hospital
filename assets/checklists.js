@@ -2,8 +2,7 @@ export const VORBEREITUNG = "Vorbereitung";
 export const AUFENTHALT = "Aufenthalt";
 
 const checklistdata = {
-  [VORBEREITUNG]: [
-    {
+  [VORBEREITUNG]: [{
       title: "Persönliche Dokumente",
       description: "Versicherungskarte, Personalausweis",
       checked: false
@@ -49,12 +48,26 @@ const checklistdata = {
       checked: false
     }
   ],
-  [AUFENTHALT]: [
+  [AUFENTHALT]: [{
+      title: "Informieren Sie Freunde & Verwandte",
+      description: "über Ihren Aufenthalt",
+      checked: false
+    },
     {
       title: "Informieren Sie Freunde & Verwandte",
       description: "Versicherungskarte, Personalausweis",
       checked: false
-    }
+    },
+    {
+      title: "Informieren Sie Freunde & Verwandte",
+      description: "Versicherungskarte, Personalausweis",
+      checked: false
+    },
+    {
+      title: "Informieren Sie Freunde & Verwandte",
+      description: "Versicherungskarte, Personalausweis",
+      checked: false
+    },
   ]
 };
 
