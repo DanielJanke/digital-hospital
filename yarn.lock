@@ -4269,6 +4269,13 @@ react-native-navigation@^1.1.457:
   dependencies:
     lodash "4.x.x"
 
+react-native-page-control@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-page-control/-/react-native-page-control-1.1.1.tgz#8ac0b0ba74dbc195eeb2f9f18bfb131ed1e6808f"
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
+
 react-native-qrcode@^0.2.6:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/react-native-qrcode/-/react-native-qrcode-0.2.6.tgz#dd92f151c118860092af9fa5bc0995f2f9dddb16"

@@ -1,6 +1,16 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, ScrollView, TouchableOpacity, Dimensions } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  Animated
+} from "react-native";
 
+import PageControl from "react-native-page-control";
 import QRCode from "react-native-qrcode";
 
 import extStyles from "../assets/styles";
@@ -15,13 +25,22 @@ export default class FormDetailView extends Component<Props> {
     navBarBackgroundColor: "#4F92DE",
     tabBarHidden: true,
     statusBarTextColorScheme: "light",
-    navBarLeftButtonColor: "white"
+    navBarLeftButtonColor: "white",
+    navBarButtonColor: "white"
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      scrollX: new Animated.Value(0)
+    };
+  }
 
   _onPressItem = () => {};
 
   render() {
     const { date, flagColor, title, description, time, onPress } = this.props;
+    console.log(this.state);
 
     const content = [
       {
@@ -40,14 +59,16 @@ export default class FormDetailView extends Component<Props> {
         allergien: false
       },
       {
-        medikamtente: [{ name: "Asperin", morning: true, noon: false, evening: false }],
+        medikamtente: [
+          { name: "Asperin", morning: true, noon: false, evening: false }
+        ],
         hospital: {
           hospital: true,
           reason: "Gebrochener Arm, 2017"
         }
       },
       {
-        x: "avcs"
+        a: ""
       }
     ];
 
@@ -60,14 +81,39 @@ export default class FormDetailView extends Component<Props> {
         <View style={{ flex: 1, marginTop: 32 }}>
           <Text style={extStyles.text.title}>Fragebögen ausfüllen</Text>
           <Text style={extStyles.text.description}>
-            Der Anamesefragebogen dient dazu alle für die Operation relevanten Informationen zu erfassen. Sie können den
-            Fragebogen hier in der App oder während ihrer Wartezeit im Krankenhaus ausfüllen.
+            Der Anamesefragebogen dient dazu alle für die Operation relevanten
+            Informationen zu erfassen. Sie können den Fragebogen hier in der App
+            oder während ihrer Wartezeit im Krankenhaus ausfüllen.
           </Text>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Fragebogen ausfüllen</Text>
           </TouchableOpacity>
           <Text style={extStyles.text.title}>QR Code</Text>
-          <ScrollView horizontal={true} pagingEnabled={true} style={styles.qrCodeWrapper}>
+          <Animated.ScrollView
+            horizontal={true}
+            pagingEnabled={true}
+            style={styles.qrCodeWrapper}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: this.state.scrollX
+                    }
+                  }
+                }
+              ],
+              {
+                useNativeDriver: false,
+                listener: event => {
+                  console.log(event.nativeEvent.contentOffset.x);
+                  this.setState({
+                    scrollX: event.nativeEvent.contentOffset.x
+                  });
+                }
+              }
+            )}
+          >
             {content.map((splittedContent, i) => {
               return (
                 <QRCode
@@ -79,10 +125,24 @@ export default class FormDetailView extends Component<Props> {
                 />
               );
             })}
-          </ScrollView>
+          </Animated.ScrollView>
+          <PageControl
+            style={styles.pageIndicator}
+            numberOfPages={content.length}
+            currentPage={Math.round(this.state.scrollX / 382)}
+            hidesForSinglePage
+            pageIndicatorTintColor="gray"
+            currentPageIndicatorTintColor="black"
+            indicatorStyle={{ borderRadius: 5 }}
+            currentIndicatorStyle={{ borderRadius: 5 }}
+            indicatorSize={{ width: 10, height: 10 }}
+          />
+
           <Text style={extStyles.text.description}>
-            Ihre Daten sind in der App sicher und werden nicht über das Internet übertragen. Stattdesssen zeigen Sie den
-            folgenden QR Code wenn Sie darum gebeten werden oder drucken den Bogen vorher aus und bringen ihn mit.
+            Ihre Daten sind in der App sicher und werden nicht über das Internet
+            übertragen. Stattdesssen zeigen Sie den folgenden QR Code wenn Sie
+            darum gebeten werden oder drucken den Bogen vorher aus und bringen
+            ihn mit.
           </Text>
         </View>
 
@@ -100,6 +160,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F0F3F6",
     alignItems: "center",
     paddingHorizontal: 16
+  },
+  pageIndicator: {
+    marginBottom: 32
   },
   header: {
     height: 164,
