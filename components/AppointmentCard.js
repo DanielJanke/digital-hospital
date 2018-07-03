@@ -57,7 +57,7 @@ export default class AppointmentCard extends Component<Props> {
               ) : (
                 <Text style={extStyles.text.title}>{time}</Text>
               )}
-              }
+              } */}
             </View>
           </View>
         </TouchableOpacity>

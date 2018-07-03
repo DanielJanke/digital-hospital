@@ -1,26 +1,20 @@
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity
-} from 'react-native';
+import React, { Component } from "react";
+import { Platform, StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-import extStyles from '../assets/styles';
+import extStyles from "../assets/styles";
 
 type Props = {
-  title: string
+  title: string,
+  onPress: () => void
 };
 
 export default class MenuCell extends Component<Props> {
   render() {
-    const { title } = this.props;
+    const { title, onPress } = this.props;
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity onPress={onPress} style={styles.container}>
         <Text style={extStyles.text.title}>{title}</Text>
-        <Image source={require('../assets/icons/rightArrow.png')} />
+        <Image source={require("../assets/icons/rightArrow.png")} />
       </TouchableOpacity>
     );
   }
@@ -28,27 +22,27 @@ export default class MenuCell extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: 'stretch',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    flexDirection: 'row',
+    alignSelf: "stretch",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    flexDirection: "row",
     paddingRight: 16,
-    alignItems: 'center',
+    alignItems: "center",
     // height: 90,
     paddingVertical: 16,
     // marginBottom: 32,
     paddingHorizontal: 16,
-    borderTopColor: '#E3E3E3',
-    borderBottomColor: '#E3E3E3',
+    borderTopColor: "#E3E3E3",
+    borderBottomColor: "#E3E3E3",
     borderBottomWidth: 1,
     borderTopWidth: 1,
     marginTop: -2,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   divider: {
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     width: 1.5,
-    backgroundColor: '#E3E3E3',
+    backgroundColor: "#E3E3E3",
     marginRight: 16
   },
   checkbox: {
