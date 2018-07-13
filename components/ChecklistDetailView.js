@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import { connect } from "react-redux";
 
 import TodoCard from "../components/TodoCard";
@@ -16,7 +23,8 @@ export class ChecklistDetailView extends Component<Props> {
     navBarBackgroundColor: "#4F92DE",
     tabBarHidden: true,
     statusBarTextColorScheme: "light",
-    navBarLeftButtonColor: "white"
+    navBarLeftButtonColor: "white",
+    navBarButtonColor: "white"
   };
 
   componentDidMount() {}
@@ -29,10 +37,11 @@ export class ChecklistDetailView extends Component<Props> {
       <ScrollView style={styles.container}>
         {/* <View style={styles.header} /> */}
         <View style={styles.content}>
-          <Text style={styles.title}>Vorbeitung mitbringen</Text>
+          {/* <Text style={styles.title}></Text> */}
           <Text style={styles.body}>
-            Hier finden Sie eine Liste von Dingen, die sie mitbringen sollten. Bitte beachten sie auch die Dinge, die
-            ihr Arzt ihnen persönlich mitgeteilt hat.
+            Hier finden Sie eine Liste von Dingen, die sie mitbringen sollten.
+            Bitte beachten sie auch die Dinge, die ihr Arzt ihnen persönlich
+            mitgeteilt hat.
           </Text>
         </View>
 

@@ -38,7 +38,9 @@ import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
+  android:
+    "Double tap R on your keyboard to reload,\n" +
+    "Shake or press menu button for dev menu"
 });
 
 type Props = { navigator: any };
@@ -64,13 +66,16 @@ export class Timeline extends Component<Props> {
     });
   }
 
-  _onTouchCard = (screen, props) => {
+  _onTouchCard = (screen, props, style) => {
+    let { title = "Checkliste Vorbereitung", backButtonTitle } = style;
     this.props.navigator.push({
       // title: Strings.camera.title,
       // screen: 'example.AppointmentDetail'
-      title: "Checkliste Vorbereitung",
+      title,
       screen: screen,
-      passProps: props
+      passProps: props,
+      backButtonTitle,
+      buttonColor: "white"
     });
   };
   _onPressSegment = pageIndex => {
@@ -83,7 +88,9 @@ export class Timeline extends Component<Props> {
 
   _computeChecklistProgress = checklist => {
     let amountOfAllItems = this.props.state.checklistReducer[checklist].length;
-    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(todoItem => todoItem.checked).length;
+    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(
+      todoItem => todoItem.checked
+    ).length;
     let progress = amountOfTrueItems / amountOfAllItems;
     return progress;
   };
@@ -91,7 +98,10 @@ export class Timeline extends Component<Props> {
   render() {
     return (
       <React.Fragment>
-        <Animated.Image style={[styles.statusBar]} source={require("../assets/header/headerstatusbar.png")} />
+        <Animated.Image
+          style={[styles.statusBar]}
+          source={require("../assets/header/headerstatusbar.png")}
+        />
         <Animated.View
           shouldRasterizeIOS={true}
           style={[
@@ -171,7 +181,10 @@ export class Timeline extends Component<Props> {
                 this._onPressSegment(0);
               }}
             >
-              <Animated.Image style={styles.assistentSegment} source={require("../assets/ukb_logo.png")} />
+              <Animated.Image
+                style={styles.assistentSegment}
+                source={require("../assets/ukb_logo.png")}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
@@ -184,13 +197,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)", "rgba(255, 255, 255, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
+                      outputRange: [
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(97, 97, 97, 1)",
+                        "rgba(255, 255, 255, 1)"
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -210,13 +235,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
+                      outputRange: [
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(97, 97, 97, 1)"
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -233,13 +270,21 @@ export class Timeline extends Component<Props> {
                   transform: [
                     {
                       translateX: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get("window").width,
+                          Dimensions.get("window").width * 2
+                        ],
                         outputRange: [7, 78, 175]
                       })
                     },
                     {
                       translateY: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get("window").width,
+                          Dimensions.get("window").width * 2
+                        ],
                         outputRange: [-17, 0, 0]
                       })
                     }
@@ -247,13 +292,21 @@ export class Timeline extends Component<Props> {
                 },
                 {
                   width: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get("window").width,
+                      Dimensions.get("window").width * 2
+                    ],
                     outputRange: [60, 90, 130]
                   })
                 },
                 {
                   height: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get("window").width,
+                      Dimensions.get("window").width * 2
+                    ],
                     outputRange: [60, 28, 28]
                   })
                 }
@@ -338,15 +391,23 @@ export class Timeline extends Component<Props> {
                 Hallo Max,{"\n"}
                 wenn du eine Frage hast, stell sie.
               </Text>
-              <TextInput ref="_textInput" placeholder="Gib deine Frage ein" />
-              <ChatbotButton
+              <TextInput
+                style={styles.textInput}
+                ref="_textInput"
+                returnKeyType="search"
+                placeholder="Gib deine Frage ein"
+              />
+              {/* <ChatbotButton
                 text="Action"
                 onPress={() => {
                   PushNotificationIOS.requestPermissions();
                 }}
-              />
+              /> */}
             </View>
-            <Animated.Image style={[styles.chatBotBackground]} source={require("../assets/chatbackground.png")} />
+            <Animated.Image
+              style={[styles.chatBotBackground]}
+              source={require("../assets/chatbackground.png")}
+            />
           </Animated.View>
 
           <Animated.ScrollView
@@ -387,7 +448,12 @@ export class Timeline extends Component<Props> {
               time="12:00"
               description="Dr. Daniel Janke"
             />
-            <Appointment title="Fragebögen ausfüllen" flagColor="#FFCC01" progress={0.3} description="Anamnese" />
+            <Appointment
+              title="Fragebögen ausfüllen"
+              flagColor="#FFCC01"
+              progress={0.3}
+              description="Anamnese"
+            />
             <Appointment
               lastEntry={true}
               flagColor="#FFCC01"
@@ -395,9 +461,16 @@ export class Timeline extends Component<Props> {
               title="Sachen packen"
               description="Checklisten"
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
-                  checklist: VORBEREITUNG
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.CHECKLIST_DETAIL_VIEW,
+                  {
+                    checklist: VORBEREITUNG
+                  },
+                  {
+                    title: "Checkliste Vorbereitung",
+                    backButtonTitle: " "
+                  }
+                );
               }}
             />
 
@@ -409,9 +482,16 @@ export class Timeline extends Component<Props> {
               description="Checklisten"
               progress={this._computeChecklistProgress(AUFENTHALT)}
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
-                  checklist: AUFENTHALT
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.CHECKLIST_DETAIL_VIEW,
+                  {
+                    checklist: AUFENTHALT
+                  },
+                  {
+                    title: "Checkliste Aufenthalt",
+                    backButtonTitle: " "
+                  }
+                );
               }}
             />
 
@@ -421,7 +501,14 @@ export class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Chatbot"
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHATBOT_VIEW);
+                this._onTouchCard(
+                  NAV_SCREENS.CHATBOT_VIEW,
+                  {},
+                  {
+                    title: "Chatbot",
+                    backButtonTitle: " "
+                  }
+                );
               }}
             />
             <Appointment
@@ -430,9 +517,11 @@ export class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Chatbot"
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.FORM_DETAIL_VIEW, {
-                  backButtonTitle: ""
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.FORM_DETAIL_VIEW,
+                  {},
+                  { title: "Anamesebogen", backButtonTitle: "" }
+                );
               }}
             />
             <ChatbotButton
@@ -449,7 +538,7 @@ export class Timeline extends Component<Props> {
 
                 PushNotificationIOS.scheduleLocalNotification({
                   alertBody:
-                    "Hallo Mallo Kallo Jallo Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente Medikamente xyz wohoooooo wohoooooo wohoooooo wohoooooo.",
+                    "Ab heute darfst du keine Medikamente mit ASS mehr zu dir nehmen.",
                   fireDate: t
                 });
               }}
@@ -461,7 +550,9 @@ export class Timeline extends Component<Props> {
               }}
             />
 
-            <Text style={styles.sectionHeadline}>Vorstationäre Untersuchung</Text>
+            <Text style={styles.sectionHeadline}>
+              Vorstationäre Untersuchung
+            </Text>
             <Appointment
               title="Fahren Sie zu uns"
               date="12.03"
@@ -531,9 +622,16 @@ export class Timeline extends Component<Props> {
               lastEntry={true}
               progress={this._computeChecklistProgress(AUFENTHALT)}
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
-                  checklist: AUFENTHALT
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.CHECKLIST_DETAIL_VIEW,
+                  {
+                    checklist: AUFENTHALT
+                  },
+                  {
+                    title: "Checkliste Aufenthalt",
+                    backButtonTitle: " "
+                  }
+                );
               }}
             />
 
@@ -555,8 +653,16 @@ export class Timeline extends Component<Props> {
               progress={0.0}
               firstEntry={true}
             />
-            <Appointment flagColor="#B2EB55" title="Hausarztbesuch" description="Rezepte abholen" />
-            <Appointment flagColor="#B2EB55" title="Apothekenbesuch" description="Rezepte einlösen" />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Hausarztbesuch"
+              description="Rezepte abholen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Apothekenbesuch"
+              description="Rezepte einlösen"
+            />
             <Appointment
               flagColor="#B2EB55"
               title="Monoposol einnehmen"
@@ -597,9 +703,16 @@ export class Timeline extends Component<Props> {
             <Text style={styles.sectionHeadline}>Checklisten</Text>
             <MenuCell
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
-                  checklist: VORBEREITUNG
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.CHECKLIST_DETAIL_VIEW,
+                  {
+                    checklist: VORBEREITUNG
+                  },
+                  {
+                    title: "Checkliste Vorbereitung",
+                    backButtonTitle: " "
+                  }
+                );
               }}
               title="Vorbereitung"
             />
@@ -672,6 +785,9 @@ const styles = StyleSheet.create({
     marginTop: 0,
     position: "absolute",
     zIndex: 1
+  },
+  textInput: {
+    fontSize: 17
   },
   headerContent: {
     zIndex: 2

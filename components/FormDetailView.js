@@ -81,7 +81,7 @@ export default class FormDetailView extends Component<Props> {
         <View style={{ flex: 1, marginTop: 32 }}>
           <Text style={extStyles.text.title}>Fragebögen ausfüllen</Text>
           <Text style={extStyles.text.description}>
-            Der Anamesefragebogen dient dazu alle für die Operation relevanten
+            Der Anamesebogen dient dazu alle für die Operation relevanten
             Informationen zu erfassen. Sie können den Fragebogen hier in der App
             oder während ihrer Wartezeit im Krankenhaus ausfüllen.
           </Text>

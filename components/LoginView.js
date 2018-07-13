@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -12,14 +14,18 @@ import {
 } from 'react-native';
 
 import TouchID from 'react-native-touch-id';
-import { connect } from 'react-redux';
-import { signIn } from '../redux/Auth';
+import {
+  connect
+} from 'react-redux';
+import {
+  signIn
+} from '../redux/Auth';
 import ChatbotButton from '../components/ChatbotButton';
 import extStyles from '../assets/styles';
 
 type Props = {};
 
-class LoginView extends Component<Props> {
+class LoginView extends Component < Props > {
   constructor(props) {
     super(props);
   }
@@ -30,7 +36,7 @@ class LoginView extends Component<Props> {
   };
 
   componentDidMount() {
-    this._handleLogin();
+    // this._handleLogin();
   }
 
   _handleLogin = touchIdOnError => {
@@ -45,39 +51,59 @@ class LoginView extends Component<Props> {
     if (this.props.state.error) {
       this.refs._textInput.focus();
     }
-    return (
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.imageBackground}
-          source={require('../assets/chatbackground.png')}
-        >
-          <Image
-            style={styles.logo}
-            source={require('../assets/ukb_logo_white.png')}
-          />
-          <Text style={styles.loginText}>Herzlich Willkommen,{'\n'}Max</Text>
-          <TextInput
-            style={styles.passwordInput}
-            ref="_textInput"
-            placeholder="Passwort"
-          />
-          <ChatbotButton
-            onPress={this._handleLogin}
-            style={styles.loginButton}
-            text="Einloggen mit TouchID"
-            text={
-              this.props.state.error ? 'Einloggen' : 'Einloggen mit TouchID'
-            }
-          />
-        </ImageBackground>
-      </View>
+    return ( <
+      View style = {
+        styles.container
+      } >
+      <
+      ImageBackground style = {
+        styles.imageBackground
+      }
+      source = {
+        require('../assets/chatbackground.png')
+      } >
+      <
+      Image style = {
+        styles.logo
+      }
+      source = {
+        require('../assets/ukb_logo_white.png')
+      }
+      /> <
+      Text style = {
+        styles.loginText
+      } > Herzlich Willkommen, {
+        '\n'
+      }
+      Max < /Text> <
+      TextInput style = {
+        styles.passwordInput
+      }
+      ref = "_textInput"
+      placeholder = "Passwort" /
+      >
+      <
+      ChatbotButton onPress = {
+        this._handleLogin
+      }
+      style = {
+        styles.loginButton
+      }
+      text = "Einloggen mit TouchID"
+      text = {
+        this.props.state.error ? 'Einloggen' : 'Einloggen mit TouchID'
+      }
+      /> <
+      /ImageBackground> <
+      /View>
     );
   }
 }
 
 export default connect(
-  state => ({ state }),
-  {
+  state => ({
+    state
+  }), {
     signIn
   }
 )(LoginView);

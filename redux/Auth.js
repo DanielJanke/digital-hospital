@@ -58,12 +58,16 @@ export function loginFailed() {
 }
 
 export function signIn(touchIdOnError) {
-  return function (dispatch) {
-    return TouchID.authenticate('Zum einloggen Finger auflegen.').then(
-      success => dispatch(loginSuccesfull()),
-      error => dispatch(loginFailed())
-    );
-  };
+  // ACTIVATE TOUCH ID HERE
+  // return function (dispatch) {
+  //   return TouchID.authenticate('Zum einloggen Finger auflegen.').then(
+  //     success => dispatch(loginSuccesfull()),
+  //     error => dispatch(loginFailed())
+  //   );
+  // };
+  return {
+    type: LOGIN_SUCCESS
+  }
 }
 
 // export const signOut = () => dispatch(signOutAction());
