@@ -1,21 +1,10 @@
-import {
-  AppRegistry
-} from "react-native";
-import {
-  Navigation
-} from "react-native-navigation";
+import { AppRegistry } from "react-native";
+import { Navigation } from "react-native-navigation";
 AppRegistry.registerComponent("digitalhospital", () => App);
-import {
-  registerScreens,
-  NAV_SCREENS
-} from "./screens";
+import { registerScreens, NAV_SCREENS } from "./screens";
 
 import logger from "redux-logger";
-import {
-  createStore,
-  combineReducers,
-  applyMiddleware
-} from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import store from "./redux";
 import thunk from "redux-thunk";
 
@@ -45,7 +34,8 @@ const loginScreen = () => {
 
 const dashboard = () => {
   Navigation.startTabBasedApp({
-    tabs: [{
+    tabs: [
+      {
         label: "Übersicht",
         screen: NAV_SCREENS.MY_AREA,
         icon: require("./assets/tabbar/overview.png")
@@ -58,7 +48,8 @@ const dashboard = () => {
       },
       {
         label: "Informationen",
-        screen: NAV_SCREENS.CHATBOT_VIEW,
+        screen: NAV_SCREENS.INFORMATION_VIEW,
+        // screen: NAV_SCREENS.CHATBOT_VIEW,
         icon: require("./assets/tabbar/more.png"),
         title: "Screen Two"
       }

@@ -31,6 +31,7 @@ import Appointment from "../components/AppointmentCard";
 import MenuCell from "../components/MenuCell";
 import TodoCard from "../components/TodoCard";
 import ChatbotButton from "../components/ChatbotButton";
+import MediCard from "../components/MediCard";
 
 import extStyles from "../assets/styles";
 
@@ -38,16 +39,16 @@ import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
+  android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
 });
 
 type Props = { navigator: any };
 export class Timeline extends Component<Props> {
   static navigatorStyle = {
     navBarHidden: true,
-    statusBarTextColorScheme: "light"
+    statusBarTextColorScheme: "light",
+    navBarBackgroundColor: "#4F92DE",
+    navBarButtonColor: "white"
   };
 
   constructor(props) {
@@ -88,9 +89,7 @@ export class Timeline extends Component<Props> {
 
   _computeChecklistProgress = checklist => {
     let amountOfAllItems = this.props.state.checklistReducer[checklist].length;
-    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(
-      todoItem => todoItem.checked
-    ).length;
+    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(todoItem => todoItem.checked).length;
     let progress = amountOfTrueItems / amountOfAllItems;
     return progress;
   };
@@ -98,10 +97,7 @@ export class Timeline extends Component<Props> {
   render() {
     return (
       <React.Fragment>
-        <Animated.Image
-          style={[styles.statusBar]}
-          source={require("../assets/header/headerstatusbar.png")}
-        />
+        <Animated.Image style={[styles.statusBar]} source={require("../assets/header/headerstatusbar.png")} />
         <Animated.View
           shouldRasterizeIOS={true}
           style={[
@@ -181,10 +177,7 @@ export class Timeline extends Component<Props> {
                 this._onPressSegment(0);
               }}
             >
-              <Animated.Image
-                style={styles.assistentSegment}
-                source={require("../assets/ukb_logo.png")}
-              />
+              <Animated.Image style={styles.assistentSegment} source={require("../assets/ukb_logo.png")} />
             </TouchableOpacity>
             <TouchableOpacity
               hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
@@ -197,25 +190,13 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [
-                        0,
-                        Dimensions.get("window").width,
-                        Dimensions.get("window").width * 2
-                      ],
-                      outputRange: [
-                        "rgba(255, 255, 255, 1)",
-                        "rgba(97, 97, 97, 1)",
-                        "rgba(255, 255, 255, 1)"
-                      ]
+                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)", "rgba(255, 255, 255, 1)"]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [
-                        0,
-                        Dimensions.get("window").width,
-                        Dimensions.get("window").width * 2
-                      ],
+                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -235,25 +216,13 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [
-                        0,
-                        Dimensions.get("window").width,
-                        Dimensions.get("window").width * 2
-                      ],
-                      outputRange: [
-                        "rgba(255, 255, 255, 1)",
-                        "rgba(255, 255, 255, 1)",
-                        "rgba(97, 97, 97, 1)"
-                      ]
+                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)"]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [
-                        0,
-                        Dimensions.get("window").width,
-                        Dimensions.get("window").width * 2
-                      ],
+                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -270,21 +239,13 @@ export class Timeline extends Component<Props> {
                   transform: [
                     {
                       translateX: this.state.scrollX.interpolate({
-                        inputRange: [
-                          0,
-                          Dimensions.get("window").width,
-                          Dimensions.get("window").width * 2
-                        ],
+                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                         outputRange: [7, 78, 175]
                       })
                     },
                     {
                       translateY: this.state.scrollX.interpolate({
-                        inputRange: [
-                          0,
-                          Dimensions.get("window").width,
-                          Dimensions.get("window").width * 2
-                        ],
+                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                         outputRange: [-17, 0, 0]
                       })
                     }
@@ -292,21 +253,13 @@ export class Timeline extends Component<Props> {
                 },
                 {
                   width: this.state.scrollX.interpolate({
-                    inputRange: [
-                      0,
-                      Dimensions.get("window").width,
-                      Dimensions.get("window").width * 2
-                    ],
+                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                     outputRange: [60, 90, 130]
                   })
                 },
                 {
                   height: this.state.scrollX.interpolate({
-                    inputRange: [
-                      0,
-                      Dimensions.get("window").width,
-                      Dimensions.get("window").width * 2
-                    ],
+                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
                     outputRange: [60, 28, 28]
                   })
                 }
@@ -404,10 +357,7 @@ export class Timeline extends Component<Props> {
                 }}
               /> */}
             </View>
-            <Animated.Image
-              style={[styles.chatBotBackground]}
-              source={require("../assets/chatbackground.png")}
-            />
+            <Animated.Image style={[styles.chatBotBackground]} source={require("../assets/chatbackground.png")} />
           </Animated.View>
 
           <Animated.ScrollView
@@ -448,12 +398,7 @@ export class Timeline extends Component<Props> {
               time="12:00"
               description="Dr. Daniel Janke"
             />
-            <Appointment
-              title="Fragebögen ausfüllen"
-              flagColor="#FFCC01"
-              progress={0.3}
-              description="Anamnese"
-            />
+            <Appointment title="Fragebögen ausfüllen" flagColor="#FFCC01" progress={0.3} description="Anamnese" />
             <Appointment
               lastEntry={true}
               flagColor="#FFCC01"
@@ -517,11 +462,7 @@ export class Timeline extends Component<Props> {
               flagColor="#55EBD9"
               description="Chatbot"
               onPress={() => {
-                this._onTouchCard(
-                  NAV_SCREENS.FORM_DETAIL_VIEW,
-                  {},
-                  { title: "Anamesebogen", backButtonTitle: "" }
-                );
+                this._onTouchCard(NAV_SCREENS.FORM_DETAIL_VIEW, {}, { title: "Anamesebogen", backButtonTitle: "" });
               }}
             />
             <ChatbotButton
@@ -537,8 +478,7 @@ export class Timeline extends Component<Props> {
                 t.setSeconds(t.getSeconds() + 3);
 
                 PushNotificationIOS.scheduleLocalNotification({
-                  alertBody:
-                    "Ab heute darfst du keine Medikamente mit ASS mehr zu dir nehmen.",
+                  alertBody: "Ab heute darfst du keine Medikamente mit ASS mehr zu dir nehmen.",
                   fireDate: t
                 });
               }}
@@ -550,9 +490,7 @@ export class Timeline extends Component<Props> {
               }}
             />
 
-            <Text style={styles.sectionHeadline}>
-              Vorstationäre Untersuchung
-            </Text>
+            <Text style={styles.sectionHeadline}>Vorstationäre Untersuchung</Text>
             <Appointment
               title="Fahren Sie zu uns"
               date="12.03"
@@ -587,18 +525,11 @@ export class Timeline extends Component<Props> {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
-              <View style={styles.infoCard}>
-                <Text>Was ist ein MRT?</Text>
-              </View>
-              <View style={styles.infoCard}>
-                <Text>Was ist ein MRT?</Text>
-              </View>
-              <View style={styles.infoCard}>
-                <Text>Was ist ein MRT?</Text>
-              </View>
-              <View style={styles.infoCard}>
-                <Text>Was ist ein MRT?</Text>
-              </View>
+              <MediCard />
+              <MediCard />
+              <MediCard />
+              <MediCard />
+              <MediCard />
             </ScrollView>
 
             <Text style={styles.sectionHeadline}>Vor der Operation</Text>
@@ -653,16 +584,8 @@ export class Timeline extends Component<Props> {
               progress={0.0}
               firstEntry={true}
             />
-            <Appointment
-              flagColor="#B2EB55"
-              title="Hausarztbesuch"
-              description="Rezepte abholen"
-            />
-            <Appointment
-              flagColor="#B2EB55"
-              title="Apothekenbesuch"
-              description="Rezepte einlösen"
-            />
+            <Appointment flagColor="#B2EB55" title="Hausarztbesuch" description="Rezepte abholen" />
+            <Appointment flagColor="#B2EB55" title="Apothekenbesuch" description="Rezepte einlösen" />
             <Appointment
               flagColor="#B2EB55"
               title="Monoposol einnehmen"
@@ -674,6 +597,13 @@ export class Timeline extends Component<Props> {
               flagColor="#B2EB55"
               title="Monoposol einnehmen"
               description="1 Tablette"
+              date="18.03"
+              time="12:00"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Videosprechstunde"
+              description="Zur Kontrolle"
               date="18.03"
               time="12:00"
               lastEntry={true}

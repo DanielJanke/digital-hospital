@@ -1,10 +1,6 @@
-import {
-  Navigation
-} from "react-native-navigation";
+import { Navigation } from "react-native-navigation";
 
-import {
-  Provider
-} from 'react-redux';
+import { Provider } from "react-redux";
 
 import LoginView from "../components/LoginView";
 
@@ -15,6 +11,7 @@ import ChecklistDetailView from "../components/ChecklistDetailView";
 import ChatbotView from "../components/ChatbotView";
 import MapView from "../components/MapView";
 import FormDetailView from "../components/FormDetailView";
+import InformationView from "../components/InformationView";
 
 export const NAV_SCREENS = {
   LOGIN_SCREEN: "LoginScreen",
@@ -22,12 +19,14 @@ export const NAV_SCREENS = {
   MY_AREA: "MyArea",
   MAP_VIEW: "MapView",
 
+  INFORMATION_VIEW: "InformationView",
+
   APPOINTMENT_DETAIL: "AppointmentDetail",
   DOCTOR_DETAIL_VIEW: "DoctorDetailView",
   CHECKLIST_DETAIL_VIEW: "ChecklistDetailView",
   CHATBOT_VIEW: "ChatbotView",
   FORM_DETAIL_VIEW: "FormDetailView"
-}
+};
 
 // import PushedScreen from "./PushedScreen";
 
@@ -42,5 +41,6 @@ export function registerScreens(store) {
 
   Navigation.registerComponent(NAV_SCREENS.CHATBOT_VIEW, () => ChatbotView, store, Provider);
   Navigation.registerComponent(NAV_SCREENS.MAP_VIEW, () => MapView, store, Provider);
+  Navigation.registerComponent(NAV_SCREENS.INFORMATION_VIEW, () => InformationView, store, Provider);
   Navigation.registerComponent(NAV_SCREENS.FORM_DETAIL_VIEW, () => FormDetailView, store, Provider);
 }

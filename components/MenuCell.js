@@ -13,8 +13,8 @@ export default class MenuCell extends Component<Props> {
     const { title, onPress } = this.props;
     return (
       <TouchableOpacity onPress={onPress} style={styles.container}>
-        <Text style={extStyles.text.title}>{title}</Text>
-        <Image source={require("../assets/icons/rightArrow.png")} />
+        <Text style={[extStyles.text.title, styles.text]}>{title}</Text>
+        <Image style={styles.arrow} source={require("../assets/icons/rightArrow.png")} />
       </TouchableOpacity>
     );
   }
@@ -38,6 +38,13 @@ const styles = StyleSheet.create({
     marginTop: -2,
     flexDirection: "row",
     justifyContent: "space-between"
+  },
+  text: {
+    flex: 10,
+    fontWeight: "400"
+  },
+  arrow: {
+    marginLeft: 2
   },
   divider: {
     alignSelf: "stretch",
