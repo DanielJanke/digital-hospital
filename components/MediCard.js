@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground } from "react-native";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground
+} from "react-native";
 
 type Props = {
   title: string,
@@ -9,13 +17,24 @@ type Props = {
 
 export default class MediCard extends Component<Props> {
   render() {
-    const { title = "Was ist ein MRT?", imageSource = require("../assets/xray.jpg"), onPress } = this.props;
+    const {
+      title = "Was ist ein MRT?",
+      supTitle,
+      opacity = 0.4,
+      imageSource = require("../assets/xray.jpg"),
+      onPress
+    } = this.props;
     return (
       <TouchableOpacity style={styles.infoCard}>
+        <Text style={styles.supTitle}>{supTitle}</Text>
         <Text style={styles.title}>{title}</Text>
 
-        <View style={styles.overlay} />
-        <ImageBackground imageStyle={styles.cardBackgroundImage} style={styles.cardBackground} source={imageSource} />
+        <View style={[{ opacity: opacity }, styles.overlay]} />
+        <ImageBackground
+          imageStyle={styles.cardBackgroundImage}
+          style={styles.cardBackground}
+          source={imageSource}
+        />
       </TouchableOpacity>
     );
   }
@@ -31,12 +50,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     zIndex: 1
   },
+  supTitle: {
+    color: "white",
+    position: "absolute",
+    marginBottom: 32,
+    bottom: 8,
+    marginLeft: 16,
+    fontSize: 20,
+    zIndex: 1,
+    fontWeight: "200"
+  },
   overlay: {
     width: "100%",
     height: "100%",
     backgroundColor: "black",
-    borderRadius: 4,
-    opacity: 0.4
+    borderRadius: 4
   },
   infoCard: {
     width: 224,

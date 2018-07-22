@@ -21,6 +21,8 @@ import {
   PushNotificationIOS,
   SafeAreaView
 } from "react-native";
+import call from "react-native-phone-call";
+
 import { ProgressCircle } from "react-native-svg-charts";
 import AnimatedPath from "react-native-svg-charts/src/animated-path";
 import { connect } from "react-redux";
@@ -34,12 +36,15 @@ import ChatbotButton from "../components/ChatbotButton";
 import MediCard from "../components/MediCard";
 
 import extStyles from "../assets/styles";
+import chatbotQuestion from "../assets/chatbotQuestions";
 
 import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
+  android:
+    "Double tap R on your keyboard to reload,\n" +
+    "Shake or press menu button for dev menu"
 });
 
 type Props = { navigator: any };
@@ -56,7 +61,9 @@ export class Timeline extends Component<Props> {
     this.state = {
       scrollX: new Animated.Value(0),
       scrollY: new Animated.Value(0),
-      scrollYTimelineBeforeSwipeToLeft: -167
+      scrollYTimelineBeforeSwipeToLeft: -167,
+      appointmentProgress: 0,
+      chatbotTextInput: ""
     };
   }
 
@@ -89,7 +96,9 @@ export class Timeline extends Component<Props> {
 
   _computeChecklistProgress = checklist => {
     let amountOfAllItems = this.props.state.checklistReducer[checklist].length;
-    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(todoItem => todoItem.checked).length;
+    let amountOfTrueItems = this.props.state.checklistReducer[checklist].filter(
+      todoItem => todoItem.checked
+    ).length;
     let progress = amountOfTrueItems / amountOfAllItems;
     return progress;
   };
@@ -97,7 +106,10 @@ export class Timeline extends Component<Props> {
   render() {
     return (
       <React.Fragment>
-        <Animated.Image style={[styles.statusBar]} source={require("../assets/header/headerstatusbar.png")} />
+        <Animated.Image
+          style={[styles.statusBar]}
+          source={require("../assets/header/headerstatusbar.png")}
+        />
         <Animated.View
           shouldRasterizeIOS={true}
           style={[
@@ -177,7 +189,10 @@ export class Timeline extends Component<Props> {
                 this._onPressSegment(0);
               }}
             >
-              <Animated.Image style={styles.assistentSegment} source={require("../assets/ukb_logo.png")} />
+              <Animated.Image
+                style={styles.assistentSegment}
+                source={require("../assets/ukb_logo.png")}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               hitSlop={{ top: 16, left: 16, bottom: 16, right: 16 }}
@@ -190,13 +205,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)", "rgba(255, 255, 255, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
+                      outputRange: [
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(97, 97, 97, 1)",
+                        "rgba(255, 255, 255, 1)"
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -216,13 +243,25 @@ export class Timeline extends Component<Props> {
                   styles.segmentText,
                   {
                     color: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
-                      outputRange: ["rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 1)", "rgba(97, 97, 97, 1)"]
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
+                      outputRange: [
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(255, 255, 255, 1)",
+                        "rgba(97, 97, 97, 1)"
+                      ]
                     })
                   },
                   {
                     opacity: this.state.scrollX.interpolate({
-                      inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                      inputRange: [
+                        0,
+                        Dimensions.get("window").width,
+                        Dimensions.get("window").width * 2
+                      ],
                       outputRange: [0.5, 1, 1]
                     })
                   }
@@ -239,13 +278,21 @@ export class Timeline extends Component<Props> {
                   transform: [
                     {
                       translateX: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get("window").width,
+                          Dimensions.get("window").width * 2
+                        ],
                         outputRange: [7, 78, 175]
                       })
                     },
                     {
                       translateY: this.state.scrollX.interpolate({
-                        inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                        inputRange: [
+                          0,
+                          Dimensions.get("window").width,
+                          Dimensions.get("window").width * 2
+                        ],
                         outputRange: [-17, 0, 0]
                       })
                     }
@@ -253,13 +300,21 @@ export class Timeline extends Component<Props> {
                 },
                 {
                   width: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get("window").width,
+                      Dimensions.get("window").width * 2
+                    ],
                     outputRange: [60, 90, 130]
                   })
                 },
                 {
                   height: this.state.scrollX.interpolate({
-                    inputRange: [0, Dimensions.get("window").width, Dimensions.get("window").width * 2],
+                    inputRange: [
+                      0,
+                      Dimensions.get("window").width,
+                      Dimensions.get("window").width * 2
+                    ],
                     outputRange: [60, 28, 28]
                   })
                 }
@@ -345,19 +400,42 @@ export class Timeline extends Component<Props> {
                 wenn du eine Frage hast, stell sie.
               </Text>
               <TextInput
-                style={styles.textInput}
+                style={[styles.textInput, styles.chatbotTextInput]}
                 ref="_textInput"
                 returnKeyType="search"
                 placeholder="Gib deine Frage ein"
+                onChangeText={text =>
+                  this.setState({
+                    chatbotTextInput: text
+                  })
+                }
               />
-              {/* <ChatbotButton
+              <ScrollView showsVerticalScrollIndicator={false}>
+                {chatbotQuestion.map(question => {
+                  if (
+                    question.question
+                      .toUpperCase()
+                      .includes(this.state.chatbotTextInput.toUpperCase())
+                  ) {
+                    return (
+                      <Text style={styles.chatbotQuestion}>
+                        {question.question}
+                      </Text>
+                    );
+                  }
+                })}
+                {/* <ChatbotButton
                 text="Action"
                 onPress={() => {
                   PushNotificationIOS.requestPermissions();
                 }}
               /> */}
+              </ScrollView>
             </View>
-            <Animated.Image style={[styles.chatBotBackground]} source={require("../assets/chatbackground.png")} />
+            <Animated.Image
+              style={[styles.chatBotBackground]}
+              source={require("../assets/chatbackground.png")}
+            />
           </Animated.View>
 
           <Animated.ScrollView
@@ -383,25 +461,47 @@ export class Timeline extends Component<Props> {
           >
             <Text style={styles.sectionHeadline}>Vorbereitung</Text>
             <Appointment
+              onPress={() => {
+                const args = {
+                  number: "+49 30 56812752", // String value with the number to call
+                  prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+                };
+                call(args).catch(console.error);
+                this.setState({
+                  appointmentProgress: 1
+                });
+              }}
               firstEntry={true}
               title="Termin vereinbaren"
               date="JETZT"
               flagColor="#55EBD9"
-              progress={1}
+              progress={this.state.appointmentProgress}
               description="Rufen Sie uns an"
             />
 
-            <Appointment
+            {/* <Appointment
               title="Voruntersuchung"
               date="BALD"
               flagColor="#B2EB55"
               time="12:00"
               description="Dr. Daniel Janke"
+            /> */}
+            <Appointment
+              title="Fragebogen ausfüllen"
+              flagColor="#B2EB55"
+              progress={0}
+              description="Anamnese"
+              onPress={() => {
+                this._onTouchCard(
+                  NAV_SCREENS.FORM_DETAIL_VIEW,
+                  {},
+                  { title: "Anamesebogen", backButtonTitle: "" }
+                );
+              }}
             />
-            <Appointment title="Fragebögen ausfüllen" flagColor="#FFCC01" progress={0.3} description="Anamnese" />
             <Appointment
               lastEntry={true}
-              flagColor="#FFCC01"
+              flagColor="#B2EB55"
               progress={this._computeChecklistProgress(VORBEREITUNG)}
               title="Sachen packen"
               description="Checklisten"
@@ -419,7 +519,7 @@ export class Timeline extends Component<Props> {
               }}
             />
 
-            <Text style={styles.sectionHeadline}>Dev Menü</Text>
+            {/* <Text style={styles.sectionHeadline}>Dev Menü</Text>
             <Appointment
               firstEntry={true}
               title="ChecklistDetailView"
@@ -488,32 +588,56 @@ export class Timeline extends Component<Props> {
               onPress={() => {
                 PushNotificationIOS.cancelAllLocalNotifications();
               }}
-            />
+            /> */}
 
-            <Text style={styles.sectionHeadline}>Vorstationäre Untersuchung</Text>
+            <Text style={styles.sectionHeadline}>
+              Vorstationäre Untersuchung
+            </Text>
             <Appointment
               title="Fahren Sie zu uns"
               date="12.03"
               flagColor="#FFCC01"
-              time="12:00"
+              time="06:00"
               description="Wegbeschreibung"
               firstEntry={true}
+              onPress={() => {
+                var t = new Date();
+                t.setSeconds(t.getSeconds() + 5);
+
+                PushNotificationIOS.scheduleLocalNotification({
+                  alertBody:
+                    "Fahren Sie jetzt zum ukb, um pünktlich zu Ihrer Voruntersuchung zu kommen.",
+                  fireDate: t
+                });
+              }}
             />
 
             <Appointment
-              title="Wartezeit"
+              title="Warten auf Aufnahme"
               date="12.03"
-              flagColor="#B2EB55"
+              flagColor="#FFCC01"
               time="36 min"
-              description="Sie werden aufgerufen"
+              description="Bitte Wartemarke ziehen"
             />
             <Appointment
-              title="Voruntersuchung"
+              title="Aufnahme"
+              date="12.03"
+              flagColor="#B2EB55"
+              description="Datenerfassung & Wahlleistungen"
+            />
+            <Appointment
+              title="D-Arzt-Ambulanz"
               date="12.03"
               flagColor="#55EBD9"
-              time="12:00"
+              description="Aufklärung über OP & Narkose"
+            />
+            <Appointment
+              title="Voruntersuchungen"
+              date="12.03"
+              flagColor="#55EBD9"
+              time="max 15:30"
               lastEntry={true}
-              description="Dr. Daniel Janke | 286"
+              description="Wenn nötig"
             />
 
             <ScrollView
@@ -525,11 +649,22 @@ export class Timeline extends Component<Props> {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
             >
+              <MediCard title="Was ist Röntgen?" />
+              <MediCard
+                imageSource={require("../assets/mrt.jpg")}
+                title="Was ist ein MRT?"
+              />
+              <MediCard
+                title="Was ist Sonografie?"
+                imageSource={require("../assets/sonografie.jpg")}
+              />
+              <MediCard
+                title="Was ist ein CT?"
+                imageSource={require("../assets/ct.jpg")}
+              />
+              {/* <MediCard />
               <MediCard />
-              <MediCard />
-              <MediCard />
-              <MediCard />
-              <MediCard />
+              <MediCard /> */}
             </ScrollView>
 
             <Text style={styles.sectionHeadline}>Vor der Operation</Text>
@@ -540,12 +675,12 @@ export class Timeline extends Component<Props> {
               description="Medikamente mit ASS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
               firstEntry={true}
             />
-            <Appointment
+            {/* <Appointment
               flagColor="#D40F14"
               title="BSS Medikamente absetzen"
               date="15.03"
               description="Medikamente mit BSS sollten Sie diese ab dem heutigen Tage nicht mehr zu sich nehmen. Klären Sie dies bitte vor mit Ihrem Arzt ab."
-            />
+            /> */}
             <Appointment
               flagColor="#B2EB55"
               title="Sachen packen"
@@ -568,12 +703,19 @@ export class Timeline extends Component<Props> {
 
             <Text style={styles.sectionHeadline}>Ihr Aufenthalt</Text>
             <Appointment
-              flagColor="#018C8E"
-              title="Operation"
-              description="Dr. Anna Borchert"
-              date="13.03"
-              time="12:00"
+              title="Fahren Sie zu uns"
+              date="20.03"
+              flagColor="#FFCC01"
+              time="06:00"
+              description="Wegbeschreibung"
               firstEntry={true}
+            />
+            <Appointment
+              flagColor="#018C8E"
+              title="Stationäre Aufnahme"
+              description="Station C"
+              date="20.03"
+              time="07:00"
               lastEntry={true}
             />
             <Text style={styles.sectionHeadline}>Nach Ihrem Aufenthalt</Text>
@@ -584,27 +726,35 @@ export class Timeline extends Component<Props> {
               progress={0.0}
               firstEntry={true}
             />
-            <Appointment flagColor="#B2EB55" title="Hausarztbesuch" description="Rezepte abholen" />
-            <Appointment flagColor="#B2EB55" title="Apothekenbesuch" description="Rezepte einlösen" />
             <Appointment
               flagColor="#B2EB55"
-              title="Monoposol einnehmen"
+              title="Hausarztbesuch"
+              description="Rezepte abholen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Apothekenbesuch"
+              description="Rezepte einlösen"
+            />
+            <Appointment
+              flagColor="#B2EB55"
+              title="Paracetamol einnehmen"
               description="1 Tablette"
-              date="17.03"
+              date="27.03"
               time="12:00"
             />
             <Appointment
               flagColor="#B2EB55"
-              title="Monoposol einnehmen"
+              title="Paracetamol einnehmen"
               description="1 Tablette"
-              date="18.03"
+              date="28.03"
               time="12:00"
             />
             <Appointment
               flagColor="#B2EB55"
               title="Videosprechstunde"
               description="Zur Kontrolle"
-              date="18.03"
+              date="29.03"
               time="12:00"
               lastEntry={true}
             />
@@ -648,9 +798,16 @@ export class Timeline extends Component<Props> {
             />
             <MenuCell
               onPress={() => {
-                this._onTouchCard(NAV_SCREENS.CHECKLIST_DETAIL_VIEW, {
-                  checklist: AUFENTHALT
-                });
+                this._onTouchCard(
+                  NAV_SCREENS.CHECKLIST_DETAIL_VIEW,
+                  {
+                    checklist: AUFENTHALT
+                  },
+                  {
+                    title: "Checkliste Vorbereitung",
+                    backButtonTitle: " "
+                  }
+                );
               }}
               title="Aufenthalt"
             />
@@ -719,6 +876,10 @@ const styles = StyleSheet.create({
   textInput: {
     fontSize: 17
   },
+  chatbotTextInput: {
+    color: "#FFFFFF",
+    marginBottom: 32
+  },
   headerContent: {
     zIndex: 2
   },
@@ -761,13 +922,20 @@ const styles = StyleSheet.create({
     width: 41
   },
   chatBotView: {
-    marginTop: 64,
+    marginTop: 200,
     paddingHorizontal: 32,
-    flex: 1,
-    justifyContent: "center"
+    flex: 1
+    // justifyContent: "center"
   },
   chatBotText: {
-    marginBottom: 16
+    marginBottom: 16,
+    opacity: 0.9
+  },
+  chatbotQuestion: {
+    opacity: 0.7,
+    color: "#FFFFFF",
+    marginBottom: 8,
+    fontSize: 20
   },
   segmentViewContainer: {
     flexDirection: "row",

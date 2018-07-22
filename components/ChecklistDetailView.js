@@ -18,7 +18,7 @@ type Props = {};
 export class ChecklistDetailView extends Component<Props> {
   static navigatorStyle = {
     // navBarHidden: true,
-    navBarTranslucent: true,
+    // navBarTranslucent: true,
     // navBarBackgroundColor: '#F9F8F5',
     navBarBackgroundColor: "#4F92DE",
     tabBarHidden: true,
@@ -44,7 +44,6 @@ export class ChecklistDetailView extends Component<Props> {
             mitgeteilt hat.
           </Text>
         </View>
-
         {this.props.state.checklistReducer[checklist].map((todoItem, i) => {
           return (
             <TodoCard
@@ -64,7 +63,9 @@ export class ChecklistDetailView extends Component<Props> {
 }
 
 export default connect(
-  state => ({ state }),
+  state => ({
+    state
+  }),
   {
     check,
     uncheck

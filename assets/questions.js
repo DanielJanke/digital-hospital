@@ -9,7 +9,7 @@ const ANSWERTYPE = {
 }
 
 const questions = [{
-    currentQuestion: 1
+    currentQuestion: 10
   },
   {
     question: "Willkommen in der App des Unfallkrankenhauses Berlin (ukb). Um Ihren Aufenthalt so angenehm wie möglich zu machen würden wir Ihnen gerne vorab ein paar Fragen stellen.",
@@ -132,10 +132,11 @@ const questions = [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
       nextQuestion: 1,
+      onPressFunction: [signOut(), signIn()]
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 1,
+      onPressFunction: [signOut(), signIn()]
     }]
   }
 ]

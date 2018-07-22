@@ -1,6 +1,4 @@
-import React, {
-  Component
-} from 'react';
+import React, { Component } from "react";
 import {
   Platform,
   StyleSheet,
@@ -11,28 +9,24 @@ import {
   TextInput,
   TouchableOpacity,
   AlertIOS
-} from 'react-native';
+} from "react-native";
 
-import TouchID from 'react-native-touch-id';
-import {
-  connect
-} from 'react-redux';
-import {
-  signIn
-} from '../redux/Auth';
-import ChatbotButton from '../components/ChatbotButton';
-import extStyles from '../assets/styles';
+import TouchID from "react-native-touch-id";
+import { connect } from "react-redux";
+import { signIn } from "../redux/Auth";
+import ChatbotButton from "../components/ChatbotButton";
+import extStyles from "../assets/styles";
 
 type Props = {};
 
-class LoginView extends Component < Props > {
+class LoginView extends Component<Props> {
   constructor(props) {
     super(props);
   }
 
   static navigatorStyle = {
     navBarHidden: true,
-    statusBarTextColorScheme: 'light'
+    statusBarTextColorScheme: "light"
   };
 
   componentDidMount() {
@@ -51,51 +45,35 @@ class LoginView extends Component < Props > {
     if (this.props.state.error) {
       this.refs._textInput.focus();
     }
-    return ( <
-      View style = {
-        styles.container
-      } >
-      <
-      ImageBackground style = {
-        styles.imageBackground
-      }
-      source = {
-        require('../assets/chatbackground.png')
-      } >
-      <
-      Image style = {
-        styles.logo
-      }
-      source = {
-        require('../assets/ukb_logo_white.png')
-      }
-      /> <
-      Text style = {
-        styles.loginText
-      } > Herzlich Willkommen, {
-        '\n'
-      }
-      Max < /Text> <
-      TextInput style = {
-        styles.passwordInput
-      }
-      ref = "_textInput"
-      placeholder = "Passwort" /
-      >
-      <
-      ChatbotButton onPress = {
-        this._handleLogin
-      }
-      style = {
-        styles.loginButton
-      }
-      text = "Einloggen mit TouchID"
-      text = {
-        this.props.state.error ? 'Einloggen' : 'Einloggen mit TouchID'
-      }
-      /> <
-      /ImageBackground> <
-      /View>
+    return (
+      <View style={styles.container}>
+        <ImageBackground
+          style={styles.imageBackground}
+          source={require("../assets/chatbackground.png")}
+        >
+          <Image
+            style={styles.logo}
+            source={require("../assets/ukb_logo_white.png")}
+          />
+          <Text style={styles.loginText}>
+            Herzlich Willkommen, {"\n"}
+            Max
+          </Text>
+          <TextInput
+            style={styles.passwordInput}
+            ref="_textInput"
+            placeholder="Passwort"
+          />
+          <ChatbotButton
+            onPress={this._handleLogin}
+            style={styles.loginButton}
+            text="Einloggen mit TouchID"
+            text={
+              this.props.state.error ? "Einloggen" : "Einloggen mit TouchID"
+            }
+          />
+        </ImageBackground>
+      </View>
     );
   }
 }
@@ -103,7 +81,8 @@ class LoginView extends Component < Props > {
 export default connect(
   state => ({
     state
-  }), {
+  }),
+  {
     signIn
   }
 )(LoginView);
@@ -111,32 +90,32 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center"
   },
   logo: {
     marginTop: 72,
     marginBottom: 104
   },
   loginButton: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginRight: 48
   },
   imageBackground: {
     width: 414,
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center"
   },
   loginText: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     marginLeft: 48,
     ...extStyles.text.loginText,
     marginBottom: 40
   },
   passwordInput: {
     marginHorizontal: 48,
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
     borderBottomWidth: 2,
-    borderBottomColor: '#ffffff',
+    borderBottomColor: "#ffffff",
     marginBottom: 32,
     paddingBottom: 4
   }
