@@ -29,7 +29,11 @@ export default class InformationView extends Component<Props> {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Image resizeMode="cover" style={[styles.headerImage]} source={require("../assets/header_informations.png")} />
+        <Image
+          resizeMode="cover"
+          style={[styles.headerImage]}
+          source={require("../assets/header_informations.png")}
+        />
         <View style={styles.headerBlocker} />
         <View style={styles.paddingContainer}>
           <Text style={[extStyles.text.title]}>Willkommen bei uns</Text>
@@ -43,13 +47,54 @@ export default class InformationView extends Component<Props> {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          <MediCard imageSource={require("../assets/ukb.jpg")} title="Über das ukb" />
-          <MediCard imageSource={require("../assets/coffee.jpg")} title="Speisekarte Cafeteria" />
-          <MediCard title="Über das ukb" />
-          <MediCard title="Über das ukb" />
+          <MediCard
+            imageSource={require("../assets/ukb.jpg")}
+            title="Über das ukb"
+          />
+          <MediCard
+            imageSource={require("../assets/coffee.jpg")}
+            title="Speisekarte Cafeteria"
+          />
+          <MediCard
+            imageSource={require("../assets/patient.jpg")}
+            title="Patientenservice"
+          />
         </ScrollView>
         <View style={styles.paddingContainer}>
-          <Text style={[extStyles.text.title, styles.text]}>Häufig gestellte Fragen</Text>
+          <Text style={[extStyles.text.title]}>Unsere Ärzte</Text>
+        </View>
+        <ScrollView
+          style={styles.infoCardScrollView}
+          // pagingEnabled={true}
+          decelerationRate={"fast"}
+          snapToInterval={240}
+          snapToAlignment={"start"}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        >
+          <MediCard
+            imageSource={require("../assets/arzt_1.jpg")}
+            supTitle="Prof. Dr. med."
+            title="Axel Ekkernkamp"
+            opacity={0.3}
+          />
+          <MediCard
+            imageSource={require("../assets/arzt_2.jpg")}
+            supTitle="Prof. Dr. med."
+            title="Julia Seifert"
+            opacity={0.2}
+          />
+          <MediCard
+            imageSource={require("../assets/arzt_3.jpg")}
+            opacity={0.2}
+            supTitle="Dr. med."
+            title="Henryk Thielemann"
+          />
+        </ScrollView>
+        <View style={styles.paddingContainer}>
+          <Text style={[extStyles.text.title, styles.text]}>
+            Häufig gestellte Fragen
+          </Text>
         </View>
         <MenuCell title="An wen muss ich mich bei organisatorischen Fragen wenden?" />
         <MenuCell title="Wo kann ich Lob und Kritik äußern und wer wird mir antworten?" />
