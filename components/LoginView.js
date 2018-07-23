@@ -30,7 +30,7 @@ class LoginView extends Component<Props> {
   };
 
   componentDidMount() {
-    // this._handleLogin();
+    this._handleLogin();
   }
 
   _handleLogin = touchIdOnError => {

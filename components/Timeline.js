@@ -22,6 +22,9 @@ import {
   SafeAreaView
 } from "react-native";
 import call from "react-native-phone-call";
+import getDirections from "react-native-google-maps-directions";
+
+import Accordion from "react-native-collapsible/Accordion";
 
 import { ProgressCircle } from "react-native-svg-charts";
 import AnimatedPath from "react-native-svg-charts/src/animated-path";
@@ -40,12 +43,12 @@ import chatbotQuestion from "../assets/chatbotQuestions";
 
 import { VORBEREITUNG, AUFENTHALT } from "../assets/checklists";
 
-const instructions = Platform.select({
-  ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-  android:
-    "Double tap R on your keyboard to reload,\n" +
-    "Shake or press menu button for dev menu"
-});
+// const instructions = Platform.select({
+//   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
+//   android:
+//     "Double tap R on your keyboard to reload,\n" +
+//     "Shake or press menu button for dev menu"
+// });
 
 type Props = { navigator: any };
 export class Timeline extends Component<Props> {
@@ -63,7 +66,8 @@ export class Timeline extends Component<Props> {
       scrollY: new Animated.Value(0),
       scrollYTimelineBeforeSwipeToLeft: -167,
       appointmentProgress: 0,
-      chatbotTextInput: ""
+      chatbotTextInput: "",
+      chatbotQuestionOpenIndex: undefined
     };
   }
 
@@ -103,6 +107,64 @@ export class Timeline extends Component<Props> {
     return progress;
   };
 
+  _handleDirections = () => {
+    const data = {
+      destination: {
+        latitude: 52.5194497,
+        longitude: 13.5656633
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving" // may be "walking", "bicycling" or "transit" as well
+        },
+        {
+          key: "dir_action",
+          value: "navigate" // this instantly initializes navigation using the given travel mode
+        }
+      ]
+    };
+
+    getDirections(data);
+  };
+
+  _renderSectionTitle = () => {
+    <View style>
+      {/* <Text>{section.content}</Text> */}
+      <Text>Test</Text>
+    </View>;
+  };
+
+  _renderHeader(section) {
+    return (
+      <View style={styles.header}>
+        <Text style={styles.headerText}>
+          Jklfjlasd jkldfs adckmlsdcmklsdmcc
+        </Text>
+      </View>
+    );
+  }
+
+  _renderContent(section) {
+    return (
+      <View style={styles.content}>
+        <Text>{section.content}</Text>
+      </View>
+    );
+  }
+
+  _openChatbotAnswer = index => {
+    if (this.state.chatbotQuestionOpenIndex == index) {
+      this.setState({
+        chatbotQuestionOpenIndex: undefined
+      });
+    } else {
+      this.setState({
+        chatbotQuestionOpenIndex: index
+      });
+    }
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -128,31 +190,7 @@ export class Timeline extends Component<Props> {
         >
           <Animated.Image
             resizeMode="cover"
-            style={[
-              styles.headerImage,
-              // {
-              //   opacity: this.state.scrollX.interpolate({
-              //     inputRange: [0, 414, 828],
-              //     outputRange: [0, 1, 1]
-              //   })
-              // },
-              {
-                // transform: [
-                //   {
-                //     translateY: this.state.scrollY.interpolate({
-                //       inputRange: [-1, 0, 1],
-                //       outputRange: [-1, 0, 1]
-                //     })
-                //   },
-                //   {
-                //     scale: this.state.scrollY.interpolate({
-                //       inputRange: [-50, 0, 1],
-                //       outputRange: [1.4, 1, 1]
-                //     })
-                //   }
-                // ]
-              }
-            ]}
+            style={[styles.headerImage]}
             source={require("../assets/header/headernew.png")}
           />
           <Animated.View
@@ -396,8 +434,9 @@ export class Timeline extends Component<Props> {
           >
             <View style={styles.chatBotView}>
               <Text style={[extStyles.text.chatbotText, styles.chatBotText]}>
-                Hallo Max,{"\n"}
-                wenn du eine Frage hast, stell sie.
+                Hallo Max
+                {/* {"\n"} */}
+                {/* wenn du eine Frage hast, stell sie. */}
               </Text>
               <TextInput
                 style={[styles.textInput, styles.chatbotTextInput]}
@@ -411,25 +450,48 @@ export class Timeline extends Component<Props> {
                 }
               />
               <ScrollView showsVerticalScrollIndicator={false}>
-                {chatbotQuestion.map(question => {
+                {chatbotQuestion.map((question, index) => {
                   if (
                     question.question
                       .toUpperCase()
                       .includes(this.state.chatbotTextInput.toUpperCase())
                   ) {
                     return (
-                      <Text style={styles.chatbotQuestion}>
-                        {question.question}
-                      </Text>
+                      <React.Fragment>
+                        <TouchableOpacity
+                          onPress={() => {
+                            this._openChatbotAnswer(index);
+                          }}
+                        >
+                          <Text
+                            style={[
+                              styles.chatbotQuestion,
+                              this.state.chatbotQuestionOpenIndex == index
+                                ? styles.chatBotQuestionActive
+                                : null
+                            ]}
+                          >
+                            {question.question}
+                          </Text>
+                        </TouchableOpacity>
+                        {this.state.chatbotQuestionOpenIndex == index ? (
+                          <React.Fragment>
+                            <View style={styles.chatbotAnswer}>
+                              <Text style={styles.chatbotAnswerText}>
+                                {question.answer}
+                              </Text>
+                            </View>
+                            <TouchableOpacity style={styles.redirect}>
+                              <Text style={styles.redirectText}>
+                                Diese Antwort hat mir nicht geholfen.
+                              </Text>
+                            </TouchableOpacity>
+                          </React.Fragment>
+                        ) : null}
+                      </React.Fragment>
                     );
                   }
                 })}
-                {/* <ChatbotButton
-                text="Action"
-                onPress={() => {
-                  PushNotificationIOS.requestPermissions();
-                }}
-              /> */}
               </ScrollView>
             </View>
             <Animated.Image
@@ -609,6 +671,7 @@ export class Timeline extends Component<Props> {
                     "Fahren Sie jetzt zum ukb, um pünktlich zu Ihrer Voruntersuchung zu kommen.",
                   fireDate: t
                 });
+                this._handleDirections();
               }}
             />
 
@@ -757,6 +820,9 @@ export class Timeline extends Component<Props> {
               date="29.03"
               time="12:00"
               lastEntry={true}
+              onPress={() => {
+                this._onTouchCard(NAV_SCREENS.CHATBOT_VIEW, {}, { title: "" });
+              }}
             />
           </Animated.ScrollView>
 
@@ -804,7 +870,7 @@ export class Timeline extends Component<Props> {
                     checklist: AUFENTHALT
                   },
                   {
-                    title: "Checkliste Vorbereitung",
+                    title: "Checkliste Aufenthalt",
                     backButtonTitle: " "
                   }
                 );
@@ -813,11 +879,26 @@ export class Timeline extends Component<Props> {
             />
             <MenuCell title="Entlassung" />
             <Text style={styles.sectionHeadline}>Fragebögen</Text>
-            <MenuCell title="Anamese" />
+            <MenuCell
+              onPress={() => {
+                this._onTouchCard(
+                  NAV_SCREENS.FORM_DETAIL_VIEW,
+                  {},
+                  { title: "Anamesebogen", backButtonTitle: "" }
+                );
+              }}
+              title="Anamese"
+            />
+            />
             <MenuCell title="Aufenthalt" />
             <MenuCell title="App" />
             <Text style={styles.sectionHeadline}>Anderes</Text>
-            <MenuCell title="Wegbeschreibungen" />
+            <MenuCell
+              onPress={() => {
+                this._handleDirections();
+              }}
+              title="Wegbeschreibungen"
+            />
             <MenuCell title="Medikationsplan" />
           </Animated.ScrollView>
         </Animated.ScrollView>
@@ -937,6 +1018,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 20
   },
+  chatBotQuestionActive: {
+    opacity: 1
+  },
   segmentViewContainer: {
     flexDirection: "row",
     width: Dimensions.get("window").width * 3
@@ -980,5 +1064,27 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "white",
     marginHorizontal: 8
+  },
+  chatbotAnswer: {
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    borderRadius: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 16
+  },
+  chatbotAnswerText: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    lineHeight: 24
+  },
+  redirect: {
+    alignSelf: "stretch",
+    marginBottom: 16
+  },
+  redirectText: {
+    color: "#FFFFFF",
+    opacity: 0.8,
+    textAlign: "center"
   }
 });

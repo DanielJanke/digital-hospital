@@ -1,6 +1,7 @@
 export default class AppStateHandler {
 
-  appState: AppState = 'signed-out';
+  // appState: AppState = 'signed-out';
+  appState: AppState = 'initial';
 
   constructor(props: Props) {
     this.props = props;
@@ -35,6 +36,7 @@ export default class AppStateHandler {
 
     const storeState = this.props.store.getState().authReducer.loggedIn;
 
+
     if (storeState !== this.appState) {
       this.startApp(this.props.store.getState().authReducer.loggedIn);
     }
@@ -45,6 +47,8 @@ export default class AppStateHandler {
 
   startApp = (appState: AppState) => {
     switch (appState) {
+      case 'initial':
+        this.props.onFirstOpen();
       case 'signed-out':
         this.props.onSignedOut();
         break;

@@ -5,7 +5,7 @@ export const LOGIN_FAILED: 'ukb/auth/LOGIN_FAILED' = 'ukb/auth/LOGIN_FAILED';
 export const LOG_OUT: 'ukb/auth/LOG_OUT' = 'ukb/auth/LOG_OUT';
 
 const initialState = {
-  loggedIn: 'signed-out',
+  loggedIn: 'initial',
   error: false
 }
 

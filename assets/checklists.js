@@ -54,18 +54,18 @@ const checklistdata = {
       checked: false
     },
     {
-      title: "Informieren Sie Freunde & Verwandte",
-      description: "Versicherungskarte, Personalausweis",
+      title: "Schlüssel hinterlegen",
+      description: "Für Notfälle und Anderes",
       checked: false
     },
     {
-      title: "Informieren Sie Freunde & Verwandte",
-      description: "Versicherungskarte, Personalausweis",
+      title: "Postlagerung sicherstellen",
+      description: "durch vertraute Person",
       checked: false
     },
     {
-      title: "Informieren Sie Freunde & Verwandte",
-      description: "Versicherungskarte, Personalausweis",
+      title: "Betreuung und Hilfsmittel organisieren",
+      description: "eventuell nach Aufenthalt notwendig",
       checked: false
     },
   ]

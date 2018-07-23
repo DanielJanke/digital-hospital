@@ -20,7 +20,7 @@ const styles = {
     },
     // ChatbottextChatbottext
     chatbotText: {
-      fontSize: 19,
+      fontSize: 20,
       color: 'white'
     },
     chatbotButton: {

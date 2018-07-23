@@ -9,15 +9,12 @@ const ANSWERTYPE = {
 }
 
 const questions = [{
-    currentQuestion: 10
-  },
-  {
     question: "Willkommen in der App des Unfallkrankenhauses Berlin (ukb). Um Ihren Aufenthalt so angenehm wie möglich zu machen würden wir Ihnen gerne vorab ein paar Fragen stellen.",
     answerType: ANSWERTYPE.BUTTON,
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Verstanden',
-      nextQuestion: 2,
+      nextQuestion: 1,
     }]
   },
   {
@@ -26,15 +23,15 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ambulant',
-      nextQuestion: 1,
+      nextQuestion: 0,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Stationär',
-      nextQuestion: 3,
+      nextQuestion: 2,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Besucher',
-      nextQuestion: 1,
+      nextQuestion: 0,
       onPressFunction: [signOut(), signIn()]
     }, ]
   },
@@ -44,7 +41,7 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Verstanden',
-      nextQuestion: 4,
+      nextQuestion: 3,
     }]
   },
   {
@@ -53,11 +50,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 5,
+      nextQuestion: 4,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 5,
+      nextQuestion: 4,
     }]
   },
   {
@@ -66,11 +63,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 6,
+      nextQuestion: 5,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 6,
+      nextQuestion: 5,
     }]
   },
   {
@@ -79,11 +76,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 7,
+      nextQuestion: 6,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 7,
+      nextQuestion: 6,
     }]
   },
   {
@@ -92,11 +89,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 8,
+      nextQuestion: 7,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 8,
+      nextQuestion: 7,
     }]
   },
   {
@@ -105,11 +102,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 9,
+      nextQuestion: 8,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 9,
+      nextQuestion: 8,
     }]
   },
   {
@@ -118,11 +115,11 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 10,
+      nextQuestion: 9,
     }, {
       type: ANSWERTYPE.BUTTON,
       text: 'Nein',
-      nextQuestion: 10,
+      nextQuestion: 9,
     }]
   },
   {
@@ -131,7 +128,6 @@ const questions = [{
     answers: [{
       type: ANSWERTYPE.BUTTON,
       text: 'Ja',
-      nextQuestion: 1,
       onPressFunction: [signOut(), signIn()]
     }, {
       type: ANSWERTYPE.BUTTON,

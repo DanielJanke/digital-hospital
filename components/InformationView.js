@@ -11,6 +11,8 @@ import {
   ImageBackground
 } from "react-native";
 
+import call from "react-native-phone-call";
+
 import MenuCell from "../components/MenuCell";
 import MediCard from "../components/MediCard";
 
@@ -101,7 +103,16 @@ export default class InformationView extends Component<Props> {
         <MenuCell title="An wen muss ich mich bei organisatorischen Fragen wenden?" />
         <MenuCell title="Wo kann ich Lob und Kritik äußern und wer wird mir antworten?" />
         <View style={styles.paddingContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            onPress={() => {
+              const args = {
+                number: "+49 30 56812752", // String value with the number to call
+                prompt: true // Optional boolean property. Determines if the user should be prompt prior to the call
+              };
+              call(args).catch(console.error);
+            }}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}>Empfang anrufen</Text>
           </TouchableOpacity>
         </View>

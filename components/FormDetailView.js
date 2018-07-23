@@ -10,14 +10,18 @@ import {
   Animated
 } from "react-native";
 
+import { connect } from "react-redux";
+
 import PageControl from "react-native-page-control";
 import QRCode from "react-native-qrcode";
 
 import extStyles from "../assets/styles";
 
+import { NAV_SCREENS } from "../screens";
+
 type Props = {};
 
-export default class FormDetailView extends Component<Props> {
+export class FormDetailView extends Component<Props> {
   static navigatorStyle = {
     // navBarHidden: true,
     navBarTranslucent: true,
@@ -38,9 +42,17 @@ export default class FormDetailView extends Component<Props> {
 
   _onPressItem = () => {};
 
+  _onPress = () => {
+    this.props.navigator.showModal({
+      animated: true, // does the pop have transition animation or does it happen immediately (optional)
+      animationType: "fade", // 'fade' (for both) / 'slide-horizontal' (for android) does the pop have different transition animation (optional)
+      screen: NAV_SCREENS.CHATBOT_VIEW_ANAMNESE
+    });
+  };
+
   render() {
+    console.log(this.props.state.questionReducer.answersAnanmnese);
     const { date, flagColor, title, description, time, onPress } = this.props;
-    console.log(this.state);
 
     const content = [
       {
@@ -60,7 +72,12 @@ export default class FormDetailView extends Component<Props> {
       },
       {
         medikamtente: [
-          { name: "Asperin", morning: true, noon: false, evening: false }
+          {
+            name: "Asperin",
+            morning: true,
+            noon: false,
+            evening: false
+          }
         ],
         hospital: {
           hospital: true,
@@ -74,21 +91,29 @@ export default class FormDetailView extends Component<Props> {
 
     return (
       <ScrollView
-        contentOffset={{ y: 100, x: 0 }}
+        contentOffset={{
+          y: 100,
+          x: 0
+        }}
         contentContainerStyle={styles.contentContainer}
         style={styles.container}
       >
-        <View style={{ flex: 1, marginTop: 32 }}>
-          <Text style={extStyles.text.title}>Fragebögen ausfüllen</Text>
+        <View
+          style={{
+            flex: 1,
+            marginTop: 32
+          }}
+        >
+          <Text style={extStyles.text.title}> Fragebögen ausfüllen </Text>
           <Text style={extStyles.text.description}>
             Der Anamesebogen dient dazu alle für die Operation relevanten
-            Informationen zu erfassen. Sie können den Fragebogen hier in der App
+            Informationen zu erfassen.Sie können den Fragebogen hier in der App
             oder während ihrer Wartezeit im Krankenhaus ausfüllen.
           </Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Fragebogen ausfüllen</Text>
+          <TouchableOpacity onPress={this._onPress} style={styles.button}>
+            <Text style={styles.buttonText}> Fragebogen ausfüllen </Text>
           </TouchableOpacity>
-          <Text style={extStyles.text.title}>QR Code</Text>
+          <Text style={extStyles.text.title}> QR Code </Text>
           <Animated.ScrollView
             horizontal={true}
             pagingEnabled={true}
@@ -106,7 +131,6 @@ export default class FormDetailView extends Component<Props> {
               {
                 useNativeDriver: false,
                 listener: event => {
-                  console.log(event.nativeEvent.contentOffset.x);
                   this.setState({
                     scrollX: event.nativeEvent.contentOffset.x
                   });
@@ -114,43 +138,61 @@ export default class FormDetailView extends Component<Props> {
               }
             )}
           >
-            {content.map((splittedContent, i) => {
-              return (
-                <QRCode
-                  key={i}
-                  value={JSON.stringify(splittedContent)}
-                  size={Dimensions.get("window").width - 32}
-                  bgColor="Black"
-                  fgColor="white"
-                />
-              );
-            })}
+            {/* {content.map((splittedContent, i) => {
+              return ( */}
+            <QRCode
+              key={0}
+              value={JSON.stringify(
+                this.props.state.questionReducer.answersAnanmnese
+              )}
+              size={Dimensions.get("window").width - 32}
+              bgColor="Black"
+              fgColor="white"
+            />
+            {/*    ); */}
+            {/*  })} */}
           </Animated.ScrollView>
-          <PageControl
+          {/* <PageControl
             style={styles.pageIndicator}
             numberOfPages={content.length}
             currentPage={Math.round(this.state.scrollX / 382)}
             hidesForSinglePage
             pageIndicatorTintColor="gray"
             currentPageIndicatorTintColor="black"
-            indicatorStyle={{ borderRadius: 5 }}
-            currentIndicatorStyle={{ borderRadius: 5 }}
-            indicatorSize={{ width: 10, height: 10 }}
-          />
-
+            indicatorStyle={{
+              borderRadius: 5
+            }}
+            currentIndicatorStyle={{
+              borderRadius: 5
+            }}
+            indicatorSize={{
+              width: 10,
+              height: 10
+            }}
+          /> */}
           <Text style={extStyles.text.description}>
             Ihre Daten sind in der App sicher und werden nicht über das Internet
-            übertragen. Stattdesssen zeigen Sie den folgenden QR Code wenn Sie
+            übertragen.Stattdesssen zeigen Sie den folgenden QR Code wenn Sie
             darum gebeten werden oder drucken den Bogen vorher aus und bringen
             ihn mit.
           </Text>
         </View>
-
-        <View style={{ height: 100 }} />
+        <View
+          style={{
+            height: 100
+          }}
+        />
       </ScrollView>
     );
   }
 }
+
+export default connect(
+  state => ({
+    state
+  }),
+  {}
+)(FormDetailView);
 
 const styles = StyleSheet.create({
   container: {

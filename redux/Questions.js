@@ -1,55 +1,83 @@
 import questions from "../assets/questions";
 
 export const ANSWER: "ukb/questions/ANSWER" = "ukb/questions/ANSWER";
-export const CHECK: "ukb/questions/ANSWER" = "ukb/questions/ANSWER";
+
+export const ANSWER_WITH_PAYLOAD_ANAMNESE: "ukb/questions/ANSWER_WITH_PAYLOAD_ANAMNESE" =
+  "ukb/questions/ANSWER_WITH_PAYLOAD_ANAMNESE";
+export const ANSWER_ANAMNESE: "ukb/questions/ANSWER_ANAMNESE" =
+  "ukb/questions/ANSWER_ANAMNESE";
+
 // export const UNCHECK: "ukb/checklists/UNCHECK" = "ukb/checklists/UNCHECK";
 
-export default function questionReducer(state = questions, action) {
+const initialState = {
+  currentQuestion: 0,
+
+  currentQuestionAnamnese: 0,
+
+  answersAnanmnese: {
+    ["name"]: "",
+    ["adress"]: "",
+    ["phone"]: "",
+    ["insurance"]: "",
+    ["nameFamily"]: "",
+    ["diabetics"]: "",
+    ["smoker"]: "",
+    ["amountCigarettes"]: ""
+  }
+};
+
+export default function questionReducer(state = initialState, action) {
   switch (action.type) {
-    case ANSWER:
-      {
-        return [
-          // ...state.slice(0, index), 
-          // {
-          //    ...state[index],
-          //    status: action.type === 'PUBLISH_POST' ? 1 : 0,
-          // },
-          // ...state.slice(index + 1),
+    case ANSWER: {
+      return {
+        ...state,
+        currentQuestion: action.nextQuestion
+      };
+    }
 
+    case ANSWER_ANAMNESE: {
+      return {
+        ...state,
+        currentQuestionAnamnese: action.nextQuestion
+      };
+    }
 
-
-          {
-            currentQuestion: action.nextQuestion
-          },
-          ...state.slice(1),
-
-        ]
-      }
-    case CHECK:
-      {
-        return {
-          ...state,
-          [action.checklist]: state[action.checklist].map((todo, index) => {
-            if (index === action.index) {
-              return {
-                ...todo,
-                checked: !todo.checked
-              };
-            }
-            return todo;
-          })
-        };
-      }
+    case ANSWER_WITH_PAYLOAD_ANAMNESE: {
+      return {
+        ...state,
+        currentQuestionAnamnese: action.nextQuestion,
+        answersAnanmnese: {
+          ...state.answersAnanmnese,
+          [action.path]: action.payload
+        }
+      };
+    }
     default:
       return state;
   }
 }
 
 export function answer(nextQuestion) {
-  return  {
+  return {
     type: ANSWER,
     nextQuestion
-  }
+  };
+}
+
+export function answerAnamnese(nextQuestion) {
+  return {
+    type: ANSWER_ANAMNESE,
+    nextQuestion
+  };
+}
+
+export function answerWithPayloadAnamnese(nextQuestion, path, payload) {
+  return {
+    type: ANSWER_WITH_PAYLOAD_ANAMNESE,
+    nextQuestion,
+    path,
+    payload
+  };
 }
 
 export function check(checklist, index) {

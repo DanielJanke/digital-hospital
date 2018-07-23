@@ -44,6 +44,16 @@ const loginScreen = () => {
   });
 };
 
+
+const initialStart = () => {
+  Navigation.startSingleScreenApp({
+    screen: {
+      // screen: NAV_SCREENS.LOGIN_SCREEN
+      screen: NAV_SCREENS.CHATBOT_VIEW
+    }
+  });
+};
+
 const dashboard = () => {
   Navigation.startTabBasedApp({
     tabs: [{
@@ -73,7 +83,11 @@ const dashboard = () => {
 
 const stateHandler = new AppStateHandler({
   store,
-  // onSignedOut: loginScreen,
-  onSignedOut: dashboard,
-  onSingedIn: dashboard
+  onFirstOpen: initialStart,
+  onSignedOut: loginScreen,
+  // onSignedOut: dashboard,
+  onSingedIn: dashboard,
+
+  // onSignedOut: startdev,
+  // onSingedIn: dashboard
 });

@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.3.1",
     "react-native": "0.55.3",
+    "react-native-collapsible": "^0.13.0",
     "react-native-google-maps-directions": "^2.0.0",
     "react-native-navigation": "^1.1.457",
     "react-native-page-control": "^1.1.1",
